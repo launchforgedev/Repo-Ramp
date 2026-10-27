@@ -3,7 +3,9 @@
 from enum import Enum
 from pathlib import Path
 from typing import Annotated
-
+import os
+import subprocess
+import sys
 import typer
 
 from reporamp.ai import (
@@ -23,6 +25,7 @@ app = typer.Typer(
     help="Understand Python codebases through structural analysis.",
     no_args_is_help=True,
 )
+
 
 class ReportFormat(str, Enum):
     """Report formats that the analyze command can write."""
@@ -51,6 +54,38 @@ def print_banner() -> None:
     typer.echo("  Scan • Understand • Improve")
     typer.echo()
 
+
+def launch_chat_terminal(
+    repository: Path,
+    report_path: Path,
+    model: str,
+) -> None:
+    """Launch RepoRamp chat in a separate Windows console."""
+    command = [
+        sys.executable,
+        "-m",
+        "reporamp.cli",
+        "chat",
+        "--repository",
+        str(repository.resolve()),
+        "--report",
+        str(report_path.resolve()),
+        "--model",
+        model,
+    ]
+
+    if os.name == "nt":
+        subprocess.Popen(
+            command,
+            cwd=str(repository.resolve()),
+            creationflags=subprocess.CREATE_NEW_CONSOLE,
+        )
+        return
+
+    # Preserve usability on platforms without Windows consoles.
+    from reporamp.chat import run_chat
+
+    run_chat(repository, report_path, model)
 
 
 @app.command()
@@ -167,6 +202,20 @@ def analyze(
             ),
         ),
     ] = False,
+    ask: Annotated[
+        bool,
+        typer.Option(
+            "--ask",
+            help="Open an interactive Ollama codebase chat after analysis.",
+        ),
+    ] = False,
+    model: Annotated[
+        str,
+        typer.Option(
+            "--model",
+            help="Ollama model to use with --ask.",
+        ),
+    ] = "qwen2.5-coder:3b",
 ) -> None:
     """Analyze a repository and generate Markdown and JSON reports.
 
@@ -195,6 +244,17 @@ def analyze(
         fail_on = config["fail_on"]
     if report_format is None:
         report_format = ReportFormat(config["format"])
+    if ask and report_format == ReportFormat.md:
+        raise typer.BadParameter(
+            "--ask requires JSON output. Use --format both or --format json.",
+            param_hint="--format",
+        )
+
+    if ask and not model.strip():
+        raise typer.BadParameter(
+            "--model cannot be empty.",
+            param_hint="--model",
+        )
 
     try:
         fail_rules = parse_rule_selection(fail_on)
@@ -285,6 +345,69 @@ def analyze(
             )
         raise typer.Exit(code=2)
 
+    if ask:
+        report_path = output / "report.json"
+
+        if not report_path.is_file():
+            typer.echo(
+                "Error: chat requires report.json. Use --format both or --format json.",
+                err=True,
+            )
+            raise typer.Exit(code=1)
+
+        try:
+            launch_chat_terminal(
+                repository=root,
+                report_path=report_path,
+                model=model,
+            )
+        except OSError as exc:
+            typer.echo(
+                f"Could not launch RepoRamp chat: {exc}",
+                err=True,
+            )
+            raise typer.Exit(code=1) from exc
+
+
+@app.command("chat")
+def chat(
+    report: Annotated[
+        Path,
+        typer.Option(
+            "--report",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+            help="Path to the generated report.json.",
+        ),
+    ],
+    repository: Annotated[
+        Path,
+        typer.Option(
+            "--repository",
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            resolve_path=True,
+            help="Repository being analyzed.",
+        ),
+    ] = Path("."),
+    model: Annotated[
+        str,
+        typer.Option("--model", help="Ollama model name."),
+    ] = "qwen2.5-coder:3b",
+) -> None:
+    """Ask questions about a previously analyzed repository."""
+    from reporamp.chat import run_chat
+
+    run_chat(
+        repository=repository,
+        report_path=report,
+        model=model,
+    )
+
 
 @app.command("diff")
 def diff(
@@ -333,6 +456,7 @@ def mcp() -> None:
         raise typer.Exit(code=1) from exc
 
     server.run()
+
 
 if __name__ == "__main__":
     app()
