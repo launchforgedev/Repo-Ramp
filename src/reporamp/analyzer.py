@@ -1,9 +1,10 @@
 """Analyze internal module dependencies in a Python repository."""
 
-from dataclasses import dataclass
-from pathlib import Path
 import sys
+from dataclasses import dataclass
 from importlib.util import find_spec
+from pathlib import Path
+
 from reporamp.parser import ModuleInfo
 
 
@@ -107,13 +108,11 @@ def analyze_dependencies(
             else:
                 imported_module = imported.module or ""
 
-            resolved = _resolve_internal_import(
-                imported_module,
-                available_modules,
-            )
+            resolved = None
 
-            # `from package import symbol` may refer to a submodule.
-            if resolved is None and imported.name:
+            # `from package import name` may refer to a submodule; prefer it
+            # over the package, which only defines symbols in `__init__.py`.
+            if imported.name:
                 candidate = (
                     f"{imported_module}.{imported.name}"
                     if imported_module
@@ -121,6 +120,12 @@ def analyze_dependencies(
                 )
                 if candidate in available_modules:
                     resolved = candidate
+
+            if resolved is None:
+                resolved = _resolve_internal_import(
+                    imported_module,
+                    available_modules,
+                )
 
             if resolved is None:
                 unresolved.add(
@@ -137,6 +142,36 @@ def analyze_dependencies(
         modules=tuple(sorted(available_modules)),
         edges=tuple(sorted(edges, key=lambda edge: (edge.source, edge.target))),
         unresolved_imports=tuple(sorted(unresolved)),
+    )
+
+
+@dataclass(frozen=True)
+class ModuleCoupling:
+    """Afferent (fan-in) and efferent (fan-out) coupling for one module."""
+
+    module: str
+    fan_in: int
+    fan_out: int
+
+    @property
+    def instability(self) -> float | None:
+        """Return Ce / (Ca + Ce), or None for a module with no internal edges."""
+        total = self.fan_in + self.fan_out
+        return round(self.fan_out / total, 3) if total else None
+
+
+def coupling_metrics(graph: DependencyGraph) -> tuple[ModuleCoupling, ...]:
+    """Return coupling metrics for every module, sorted by module name."""
+    fan_in = {module: 0 for module in graph.modules}
+    fan_out = {module: 0 for module in graph.modules}
+
+    for edge in set(graph.edges):
+        fan_out[edge.source] += 1
+        fan_in[edge.target] += 1
+
+    return tuple(
+        ModuleCoupling(module, fan_in[module], fan_out[module])
+        for module in graph.modules
     )
 
 

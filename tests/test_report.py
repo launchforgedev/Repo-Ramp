@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from reporamp.analyzer import DependencyGraph, analyze_dependencies
+from reporamp.analyzer import DependencyEdge, DependencyGraph, analyze_dependencies
 from reporamp.parser import parse_python_file
 from reporamp.report import render_json, render_markdown, write_reports
 
@@ -52,7 +52,7 @@ def test_json_has_expected_schema(tmp_path: Path) -> None:
 
     payload = json.loads(render_json(modules, graph))
 
-    assert payload["schema_version"] == 1
+    assert payload["schema_version"] == 2
     assert payload["summary"]["modules"] == 3
     assert payload["summary"]["internal_dependencies"] == 1
     assert payload["dependencies"] == [{"source": "app", "target": "services.auth"}]
@@ -81,7 +81,7 @@ def test_writes_both_report_files(tmp_path: Path) -> None:
     assert json_path.name == "report.json"
     assert markdown_path.is_file()
     assert json_path.is_file()
-    assert json.loads(json_path.read_text(encoding="utf-8"))["schema_version"] == 1
+    assert json.loads(json_path.read_text(encoding="utf-8"))["schema_version"] == 2
 
 
 def test_rejects_file_as_output_directory(tmp_path: Path) -> None:
@@ -105,3 +105,71 @@ def test_empty_analysis_produces_valid_reports() -> None:
     payload = json.loads(render_json([], graph))
     assert payload["modules"] == []
     assert payload["dependencies"] == []
+
+
+def test_write_reports_markdown_only(tmp_path: Path) -> None:
+    modules, graph = build_analysis(tmp_path)
+
+    paths = write_reports(modules, graph, tmp_path / "out", report_format="md")
+
+    assert [path.name for path in paths] == ["report.md"]
+    assert not (tmp_path / "out" / "report.json").exists()
+
+
+def test_markdown_includes_mermaid_graph_with_cycle_edges() -> None:
+    graph = DependencyGraph(
+        modules=("a", "b", "c"),
+        edges=(
+            DependencyEdge("a", "b"),
+            DependencyEdge("b", "a"),
+            DependencyEdge("b", "c"),
+        ),
+        unresolved_imports=(),
+    )
+
+    report = render_markdown([], graph)
+
+    block = report.split("## Dependency Graph", 1)[1].split("```", 2)[1]
+    assert block.splitlines() == [
+        "mermaid",
+        "flowchart LR",
+        '    n0["a"]',
+        '    n1["b"]',
+        '    n2["c"]',
+        "    n0 --> n1",
+        "    n1 --> n0",
+        "    n1 --> n2",
+        "    linkStyle 0,1 stroke:#d62728,stroke-width:2px",
+    ]
+    assert "truncated" not in report
+
+
+def test_mermaid_graph_is_truncated_to_most_connected_nodes() -> None:
+    leaves = [f"leaf{index:02d}" for index in range(70)]
+    graph = DependencyGraph(
+        modules=("hub", *leaves),
+        edges=tuple(DependencyEdge("hub", leaf) for leaf in leaves),
+        unresolved_imports=(),
+    )
+
+    report = render_markdown([], graph)
+
+    assert "showing 60 of 71 connected modules" in report
+    assert '["hub"]' in report
+    assert report.count(" --> ") == 59
+
+
+def test_reports_include_coupling_metrics(tmp_path: Path) -> None:
+    modules, graph = build_analysis(tmp_path)
+
+    payload = json.loads(render_json(modules, graph))
+    report = render_markdown(modules, graph)
+
+    assert payload["coupling"] == [
+        {"module": "app", "fan_in": 0, "fan_out": 1, "instability": 1.0},
+        {"module": "services", "fan_in": 0, "fan_out": 0, "instability": None},
+        {"module": "services.auth", "fan_in": 1, "fan_out": 0, "instability": 0.0},
+    ]
+    assert "## Most Coupled Modules" in report
+    assert "| `app` | 0 | 1 | 1.00 |" in report
+    assert "`services` |" not in report
