@@ -27,10 +27,12 @@ reporamp = "reporamp.cli:app"
 [project.optional-dependencies]
 ai = [
     "anthropic>=2.0",
+    
 ]
 mcp = [
     "mcp>=2.0,<3",
 ]
+ollama = ["ollama>=0.4.0"]
 dev = [
     "pytest",
     "ruff",
