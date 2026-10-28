@@ -9,7 +9,6 @@ from reporamp.ollama_client import (
 )
 
 
-
 class FakeOllama:
     def __init__(self, chunks=None, error=None, models=None):
         self.chunks = chunks or []

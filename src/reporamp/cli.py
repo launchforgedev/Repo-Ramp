@@ -1,11 +1,12 @@
 """Command-line interface for RepoRamp."""
 
-from enum import Enum
-from pathlib import Path
-from typing import Annotated
 import os
 import subprocess
 import sys
+from enum import Enum
+from pathlib import Path
+from typing import Annotated
+
 import typer
 
 from reporamp.ai import (
