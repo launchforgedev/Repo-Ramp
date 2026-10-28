@@ -4,7 +4,6 @@ from collections.abc import Iterator
 from typing import Any
 
 DEFAULT_OLLAMA_HOST = "http://localhost:11434"
-DEFAULT_OLLAMA_MODEL = "qwen2.5-coder:3b"
 
 
 class OllamaClientError(RuntimeError):
@@ -16,18 +15,18 @@ class OllamaChatClient:
 
     def __init__(
         self,
-        model: str = DEFAULT_OLLAMA_MODEL,
+        model: str | None = None,
         host: str = DEFAULT_OLLAMA_HOST,
         timeout: float = 120.0,
         client: Any | None = None,
     ) -> None:
-        if not model.strip():
+        if model is not None and not model.strip():
             raise ValueError("Ollama model name cannot be empty.")
 
         if not host.strip():
             raise ValueError("Ollama host cannot be empty.")
 
-        self.model = model
+        self.model = model.strip() if model is not None else None
         self.host = host
         self.timeout = timeout
 
@@ -44,6 +43,46 @@ class OllamaChatClient:
 
         self._client = client
 
+    def list_models(self) -> list[str]:
+        """Return names of models installed in the Ollama instance."""
+        try:
+            response = self._client.list()
+
+            models = (
+                response.get("models", [])
+                if isinstance(response, dict)
+                else getattr(response, "models", [])
+            )
+
+            names: set[str] = set()
+
+            for item in models:
+                if isinstance(item, dict):
+                    name = item.get("model") or item.get("name")
+                else:
+                    name = getattr(item, "model", None) or getattr(
+                        item, "name", None
+                    )
+
+                if isinstance(name, str) and name.strip():
+                    names.add(name.strip())
+
+            return sorted(names)
+
+        except Exception as exc:
+            raise OllamaClientError(
+                f"Could not list Ollama models at {self.host}. "
+                "Check that Ollama is running. "
+                f"Details: {exc}"
+            ) from exc
+
+    def set_model(self, model: str) -> None:
+        """Set the model used for subsequent chat requests."""
+        if not model.strip():
+            raise ValueError("Ollama model name cannot be empty.")
+
+        self.model = model.strip()
+
     def stream_answer(
         self,
         question: str,
@@ -56,6 +95,11 @@ class OllamaChatClient:
         ),
     ) -> Iterator[str]:
         """Yield response text incrementally from the selected model."""
+        if not self.model:
+            raise OllamaClientError(
+                "No Ollama model selected. Choose an installed model first."
+            )
+
         if not question.strip():
             raise ValueError("Question cannot be empty.")
 

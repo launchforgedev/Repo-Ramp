@@ -258,6 +258,67 @@ reporamp analyze . --ai
 
 Only the structured analysis context is sent: repo-relative module paths, internal dependency edges, the unresolved-import count and dependency cycles. Source code is never sent. If `ANTHROPIC_API_KEY` is unset, the SDK is not installed, or the request fails, RepoRamp prints why and writes the built-in local summary instead. The run still succeeds.
 
+## Ollama codebase chat (optional)
+
+RepoRamp can launch an interactive chat about a repository after analysis using a locally running [Ollama](https://ollama.com/) instance. You can select from your installed models or specify one directly.
+
+### Installation
+
+Install RepoRamp with the optional Ollama dependency:
+
+```bash
+python -m pip install "reporamp[ollama]"
+```
+
+Install [Ollama](https://ollama.com/) separately, start it, and download at least one model. For example:
+
+```bash
+ollama pull llama3.2
+```
+
+### Start a chat after analysis
+
+Run the analyzer with `--ask`. JSON output is required because the chat uses the generated `report.json` as repository context.
+
+```bash
+reporamp analyze . --ask --format both
+```
+
+RepoRamp discovers the models installed in your Ollama instance:
+
+- **One model installed:** RepoRamp selects it automatically.
+- **Multiple models installed:** RepoRamp displays a numbered selection menu.
+- **No models installed:** RepoRamp displays an error and tells you how to install one.
+
+To select a model explicitly:
+
+```bash
+reporamp analyze . --ask --model llama3.2
+```
+
+### Chat with an existing report
+
+You can start a chat without rerunning the analysis:
+
+```bash
+reporamp chat --report reporamp-report/report.json
+```
+
+Specify a model directly if you prefer:
+
+```bash
+reporamp chat --report reporamp-report/report.json --model llama3.2
+```
+
+Inside the chat, type a question about the analyzed codebase. Enter `exit` or `quit` to close the session.
+
+### Notes
+
+- Ollama support is optional; install `reporamp[ollama]` to use this feature.
+- Ollama must be installed and running locally, and the requested model must be available.
+- The chat uses the generated analysis report as context. It does not automatically read every source file or guarantee that every answer is correct.
+- The `--ask` option is separate from `--ai`. The latter generates an architecture summary using Claude and requires `reporamp[ai]` and an Anthropic API key.
+
 ## MCP server (optional)
 
 `reporamp mcp` runs a [Model Context Protocol](https://modelcontextprotocol.io) server over stdio, so MCP clients (for example Claude Code or Claude Desktop) can query a repository's structure:

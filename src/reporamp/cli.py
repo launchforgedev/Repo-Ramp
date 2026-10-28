@@ -55,10 +55,11 @@ def print_banner() -> None:
     typer.echo()
 
 
+
 def launch_chat_terminal(
     repository: Path,
     report_path: Path,
-    model: str,
+    model: str | None = None,
 ) -> None:
     """Launch RepoRamp chat in a separate Windows console."""
     command = [
@@ -70,9 +71,11 @@ def launch_chat_terminal(
         str(repository.resolve()),
         "--report",
         str(report_path.resolve()),
-        "--model",
-        model,
     ]
+
+    # Pass --model only when the user explicitly selected one.
+    if model is not None:
+        command.extend(["--model", model])
 
     if os.name == "nt":
         subprocess.Popen(
@@ -86,6 +89,7 @@ def launch_chat_terminal(
     from reporamp.chat import run_chat
 
     run_chat(repository, report_path, model)
+
 
 
 @app.command()
@@ -209,13 +213,15 @@ def analyze(
             help="Open an interactive Ollama codebase chat after analysis.",
         ),
     ] = False,
-    model: Annotated[
-        str,
-        typer.Option(
-            "--model",
-            help="Ollama model to use with --ask.",
-        ),
-    ] = "qwen2.5-coder:3b",
+    
+model: Annotated[
+    str | None,
+    typer.Option(
+        "--model",
+        help="Ollama model to use with --ask. Defaults to interactive selection.",
+    ),
+] = None,
+
 ) -> None:
     """Analyze a repository and generate Markdown and JSON reports.
 
@@ -250,11 +256,11 @@ def analyze(
             param_hint="--format",
         )
 
-    if ask and not model.strip():
-        raise typer.BadParameter(
-            "--model cannot be empty.",
-            param_hint="--model",
-        )
+    if ask and model is not None and not model.strip():
+       raise typer.BadParameter(
+        "--model cannot be empty.",
+        param_hint="--model",
+    )
 
     try:
         fail_rules = parse_rule_selection(fail_on)
@@ -394,10 +400,15 @@ def chat(
             help="Repository being analyzed.",
         ),
     ] = Path("."),
-    model: Annotated[
-        str,
-        typer.Option("--model", help="Ollama model name."),
-    ] = "qwen2.5-coder:3b",
+    
+model: Annotated[
+    str | None,
+    typer.Option(
+        "--model",
+        help="Ollama model name. Defaults to interactive selection.",
+    ),
+] = None,
+
 ) -> None:
     """Ask questions about a previously analyzed repository."""
     from reporamp.chat import run_chat
