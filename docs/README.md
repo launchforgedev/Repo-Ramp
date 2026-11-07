@@ -1,20 +1,42 @@
-# RepoRamp Docs — Quick Start UI
+# RepoRamp Documentation Site
 
-Responsive static documentation website with a clean developer-docs layout: left navigation, central article, right-side table of contents, search, copyable commands, callouts, and responsive mobile navigation.
+This folder contains RepoRamp's static documentation website.
 
 ## Preview locally
-Open `index.html` in a browser, or run:
+
+From the repository root:
 
 ```powershell
-python -m http.server 8000
+python -m http.server 8000 --directory docs
 ```
 
-Then visit http://localhost:8000.
+Open http://localhost:8000 in a browser.
 
-## Deploy with GitHub Pages
-1. Copy the files into the root of a documentation repository or a `/docs` folder in RepoRamp.
-2. Open GitHub **Settings → Pages**.
-3. Select **Deploy from a branch**, select `main`, and choose `/ (root)` or `/docs`.
-4. Save and add the published URL to RepoRamp's About → Website field.
+Alternatively, open `index.html` directly. Running a local server is recommended because browser clipboard features work best on localhost or HTTPS.
 
-No build step is required. Review CLI examples against the exact release you publish.
+## Files
+
+```text
+docs/
+├── assets/
+│   ├── favicon.png
+│   └── favicon.ico
+├── index.html
+├── app.js
+└── styles.css
+```
+
+- `index.html` contains the guides, CLI reference, integration instructions and command examples.
+- `styles.css` controls the responsive documentation layout.
+- `app.js` provides navigation, search and copy-command interactions.
+- `assets/favicon.png` is the only UI use of the RepoRamp brand image: it is a cropped icon mark for the browser tab.
+
+## GitHub Pages
+
+1. Push the repository to GitHub.
+2. Open repository **Settings → Pages**.
+3. Choose **Deploy from a branch**.
+4. Select the `main` branch and `/docs` folder.
+5. Save and wait for the Pages deployment to complete.
+
+Review commands against the checked-in CLI source before publishing a new release.
