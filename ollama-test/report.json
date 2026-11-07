@@ -1,0 +1,4026 @@
+{
+  "schema_version": 2,
+  "summary": {
+    "modules": 29,
+    "internal_dependencies": 52,
+    "standard_library_imports": 66,
+    "third_party_imports": 22,
+    "unresolved_imports": 2,
+    "dependency_cycles": 0,
+    "parse_errors": 0
+  },
+  "parse_errors": [],
+  "quality_findings": [
+    {
+      "rule_id": "QR002",
+      "severity": "warning",
+      "message": "Module depends on 9 internal modules",
+      "module": "reporamp.cli",
+      "suggestion": "Review the module's responsibilities and consider splitting it into smaller modules"
+    },
+    {
+      "rule_id": "QR006",
+      "severity": "warning",
+      "message": "Function `analyze` (line 105) has 272 lines (limit 100)",
+      "module": "reporamp.cli",
+      "suggestion": "Extract parts of the function into helpers"
+    },
+    {
+      "rule_id": "QR006",
+      "severity": "warning",
+      "message": "Function `render_markdown` (line 102) has 178 lines (limit 100)",
+      "module": "reporamp.report",
+      "suggestion": "Extract parts of the function into helpers"
+    },
+    {
+      "rule_id": "QR006",
+      "severity": "warning",
+      "message": "Function `render_json` (line 282) has 101 lines (limit 100)",
+      "module": "reporamp.report",
+      "suggestion": "Extract parts of the function into helpers"
+    }
+  ],
+  "modules": [
+    {
+      "path": "src/reporamp/__init__.py",
+      "imports": [],
+      "classes": [],
+      "functions": []
+    },
+    {
+      "path": "src/reporamp/ai.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "os",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "classify_import",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "find_dependency_cycles",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "ModuleInfo",
+          "alias": null,
+          "level": 0,
+          "line": 13
+        },
+        {
+          "module": "anthropic",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 120
+        }
+      ],
+      "classes": [
+        {
+          "name": "AISummaryUnavailable",
+          "line": 100,
+          "end_line": 101,
+          "bases": [
+            "Exception"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "build_analysis_context",
+          "line": 16,
+          "end_line": 52,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "display",
+          "line": 31,
+          "end_line": 37,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "generate_architecture_summary",
+          "line": 55,
+          "end_line": 84,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "generate_ai_summary",
+          "line": 104,
+          "end_line": 154,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/analyzer.py",
+      "imports": [
+        {
+          "module": "sys",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "dataclasses",
+          "name": "dataclass",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "importlib.util",
+          "name": "find_spec",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "ModuleInfo",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "DependencyEdge",
+          "line": 12,
+          "end_line": 16,
+          "bases": []
+        },
+        {
+          "name": "DependencyGraph",
+          "line": 20,
+          "end_line": 25,
+          "bases": []
+        },
+        {
+          "name": "ModuleCoupling",
+          "line": 149,
+          "end_line": 160,
+          "bases": []
+        }
+      ],
+      "functions": [
+        {
+          "name": "_module_name",
+          "line": 29,
+          "end_line": 42,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_resolve_internal_import",
+          "line": 46,
+          "end_line": 65,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "analyze_dependencies",
+          "line": 68,
+          "end_line": 145,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "instability",
+          "line": 157,
+          "end_line": 160,
+          "is_async": false,
+          "parent_class": "ModuleCoupling"
+        },
+        {
+          "name": "coupling_metrics",
+          "line": 163,
+          "end_line": 175,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "find_dependency_cycles",
+          "line": 178,
+          "end_line": 215,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "visit",
+          "line": 195,
+          "end_line": 209,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "classify_import",
+          "line": 217,
+          "end_line": 233,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/chat.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "typer",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "reporamp.ollama_client",
+          "name": "OllamaChatClient",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.ollama_client",
+          "name": "OllamaClientError",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "select_model",
+          "line": 26,
+          "end_line": 65,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "show_header",
+          "line": 68,
+          "end_line": 80,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "show_help",
+          "line": 83,
+          "end_line": 91,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "change_model",
+          "line": 94,
+          "end_line": 122,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "ask_question",
+          "line": 125,
+          "end_line": 140,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "run_chat",
+          "line": 143,
+          "end_line": 222,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/cli.py",
+      "imports": [
+        {
+          "module": "os",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "subprocess",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "sys",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "enum",
+          "name": "Enum",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "typing",
+          "name": "Annotated",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "typer",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 10
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "AISummaryUnavailable",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "build_analysis_context",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "generate_ai_summary",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "generate_architecture_summary",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.config",
+          "name": "DEFAULTS",
+          "alias": null,
+          "level": 0,
+          "line": 18
+        },
+        {
+          "module": "reporamp.config",
+          "name": "load_config",
+          "alias": null,
+          "level": 0,
+          "line": 18
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "diff_reports",
+          "alias": null,
+          "level": 0,
+          "line": 19
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "has_new_problems",
+          "alias": null,
+          "level": 0,
+          "line": 19
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "load_report",
+          "alias": null,
+          "level": 0,
+          "line": 19
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "render_diff",
+          "alias": null,
+          "level": 0,
+          "line": 19
+        },
+        {
+          "module": "reporamp.pipeline",
+          "name": "run_analysis",
+          "alias": null,
+          "level": 0,
+          "line": 20
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "parse_rule_selection",
+          "alias": null,
+          "level": 0,
+          "line": 21
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "select_findings",
+          "alias": null,
+          "level": 0,
+          "line": 21
+        },
+        {
+          "module": "reporamp.report",
+          "name": "write_reports",
+          "alias": null,
+          "level": 0,
+          "line": 22
+        },
+        {
+          "module": "reporamp.chat",
+          "name": "run_chat",
+          "alias": null,
+          "level": 0,
+          "line": 90
+        },
+        {
+          "module": "reporamp",
+          "name": "__version__",
+          "alias": null,
+          "level": 0,
+          "line": 99
+        },
+        {
+          "module": "reporamp.chat",
+          "name": "run_chat",
+          "alias": null,
+          "level": 0,
+          "line": 415
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "create_server",
+          "alias": null,
+          "level": 0,
+          "line": 459
+        }
+      ],
+      "classes": [
+        {
+          "name": "ReportFormat",
+          "line": 31,
+          "end_line": 36,
+          "bases": [
+            "str",
+            "Enum"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "print_banner",
+          "line": 39,
+          "end_line": 56,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "launch_chat_terminal",
+          "line": 60,
+          "end_line": 92,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "version",
+          "line": 97,
+          "end_line": 101,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "analyze",
+          "line": 105,
+          "end_line": 376,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "chat",
+          "line": 380,
+          "end_line": 421,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "diff",
+          "line": 425,
+          "end_line": 452,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "mcp",
+          "line": 456,
+          "end_line": 470,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/config.py",
+      "imports": [
+        {
+          "module": "sys",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "tomllib",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "tomli",
+          "name": null,
+          "alias": "tomllib",
+          "level": 0,
+          "line": 9
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_string_list",
+          "line": 24,
+          "end_line": 27,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "load_config",
+          "line": 30,
+          "end_line": 68,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "load_entry_points",
+          "line": 71,
+          "end_line": 86,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/diff.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "load_report",
+          "line": 9,
+          "end_line": 17,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_changes",
+          "line": 20,
+          "end_line": 21,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "diff_reports",
+          "line": 24,
+          "end_line": 52,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "modules",
+          "line": 30,
+          "end_line": 31,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "dependencies",
+          "line": 33,
+          "end_line": 36,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "cycles",
+          "line": 38,
+          "end_line": 39,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "findings",
+          "line": 41,
+          "end_line": 45,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "has_new_problems",
+          "line": 55,
+          "end_line": 57,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_describe",
+          "line": 68,
+          "end_line": 75,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "render_diff",
+          "line": 78,
+          "end_line": 91,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/mcp_server.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "find_dependency_cycles",
+          "alias": null,
+          "level": 0,
+          "line": 11
+        },
+        {
+          "module": "reporamp.pipeline",
+          "name": "Analysis",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.pipeline",
+          "name": "run_configured_analysis",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "parse_rule_selection",
+          "alias": null,
+          "level": 0,
+          "line": 13
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "select_findings",
+          "alias": null,
+          "level": 0,
+          "line": 13
+        },
+        {
+          "module": "reporamp.report",
+          "name": "render_json",
+          "alias": null,
+          "level": 0,
+          "line": 14
+        },
+        {
+          "module": "mcp.server.mcpserver",
+          "name": "MCPServer",
+          "alias": null,
+          "level": 0,
+          "line": 85
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_analyze",
+          "line": 17,
+          "end_line": 23,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "analyze_repo",
+          "line": 26,
+          "end_line": 38,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "get_cycles",
+          "line": 41,
+          "end_line": 45,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "who_imports",
+          "line": 48,
+          "end_line": 57,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "get_findings",
+          "line": 60,
+          "end_line": 77,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "create_server",
+          "line": 83,
+          "end_line": 98,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/ollama_client.py",
+      "imports": [
+        {
+          "module": "collections.abc",
+          "name": "Iterator",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "typing",
+          "name": "Any",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "ollama",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 35
+        }
+      ],
+      "classes": [
+        {
+          "name": "OllamaClientError",
+          "line": 9,
+          "end_line": 10,
+          "bases": [
+            "RuntimeError"
+          ]
+        },
+        {
+          "name": "OllamaChatClient",
+          "line": 13,
+          "end_line": 140,
+          "bases": []
+        }
+      ],
+      "functions": [
+        {
+          "name": "__init__",
+          "line": 16,
+          "end_line": 44,
+          "is_async": false,
+          "parent_class": "OllamaChatClient"
+        },
+        {
+          "name": "list_models",
+          "line": 46,
+          "end_line": 77,
+          "is_async": false,
+          "parent_class": "OllamaChatClient"
+        },
+        {
+          "name": "set_model",
+          "line": 79,
+          "end_line": 84,
+          "is_async": false,
+          "parent_class": "OllamaChatClient"
+        },
+        {
+          "name": "stream_answer",
+          "line": 86,
+          "end_line": 140,
+          "is_async": false,
+          "parent_class": "OllamaChatClient"
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/parser.py",
+      "imports": [
+        {
+          "module": "ast",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "tokenize",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "dataclasses",
+          "name": "dataclass",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "ImportInfo",
+          "line": 10,
+          "end_line": 17,
+          "bases": []
+        },
+        {
+          "name": "FunctionInfo",
+          "line": 21,
+          "end_line": 28,
+          "bases": []
+        },
+        {
+          "name": "ClassInfo",
+          "line": 32,
+          "end_line": 38,
+          "bases": []
+        },
+        {
+          "name": "ModuleInfo",
+          "line": 42,
+          "end_line": 48,
+          "bases": []
+        },
+        {
+          "name": "_ModuleVisitor",
+          "line": 59,
+          "end_line": 131,
+          "bases": [
+            "ast.NodeVisitor"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "_expression_name",
+          "line": 51,
+          "end_line": 56,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "__init__",
+          "line": 62,
+          "end_line": 66,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "visit_Import",
+          "line": 68,
+          "end_line": 78,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "visit_ImportFrom",
+          "line": 80,
+          "end_line": 90,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "visit_ClassDef",
+          "line": 92,
+          "end_line": 106,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "visit_FunctionDef",
+          "line": 108,
+          "end_line": 109,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "visit_AsyncFunctionDef",
+          "line": 111,
+          "end_line": 112,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "_record_function",
+          "line": 114,
+          "end_line": 131,
+          "is_async": false,
+          "parent_class": "_ModuleVisitor"
+        },
+        {
+          "name": "parse_python_file",
+          "line": 134,
+          "end_line": 170,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/pipeline.py",
+      "imports": [
+        {
+          "module": "dataclasses",
+          "name": "dataclass",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "_module_name",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "analyze_dependencies",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.config",
+          "name": "DEFAULTS",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.config",
+          "name": "load_config",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.config",
+          "name": "load_entry_points",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "ModuleInfo",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "parse_python_file",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "Finding",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "analyze_quality",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.scanner",
+          "name": "scan_repository",
+          "alias": null,
+          "level": 0,
+          "line": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "Analysis",
+          "line": 14,
+          "end_line": 21,
+          "bases": []
+        }
+      ],
+      "functions": [
+        {
+          "name": "run_analysis",
+          "line": 24,
+          "end_line": 56,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "run_configured_analysis",
+          "line": 59,
+          "end_line": 70,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/quality.py",
+      "imports": [
+        {
+          "module": "ast",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "dataclasses",
+          "name": "dataclass",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "find_dependency_cycles",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "Finding",
+          "line": 14,
+          "end_line": 19,
+          "bases": []
+        }
+      ],
+      "functions": [
+        {
+          "name": "find_empty_modules",
+          "line": 22,
+          "end_line": 63,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "find_high_dependency_modules",
+          "line": 66,
+          "end_line": 97,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "find_cycle_findings",
+          "line": 100,
+          "end_line": 121,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "find_high_fan_in_modules",
+          "line": 124,
+          "end_line": 146,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_is_entry_point",
+          "line": 153,
+          "end_line": 160,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "find_orphan_modules",
+          "line": 163,
+          "end_line": 185,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "find_oversized_code",
+          "line": 188,
+          "end_line": 240,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "analyze_quality",
+          "line": 243,
+          "end_line": 272,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "parse_rule_selection",
+          "line": 275,
+          "end_line": 289,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "select_findings",
+          "line": 292,
+          "end_line": 297,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/report.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "classify_import",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "coupling_metrics",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "find_dependency_cycles",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "ModuleInfo",
+          "alias": null,
+          "level": 0,
+          "line": 12
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "Finding",
+          "alias": null,
+          "level": 0,
+          "line": 13
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_classify_unresolved_imports",
+          "line": 16,
+          "end_line": 30,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_render_mermaid",
+          "line": 38,
+          "end_line": 89,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_display_path",
+          "line": 92,
+          "end_line": 100,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "render_markdown",
+          "line": 102,
+          "end_line": 279,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "render_json",
+          "line": 282,
+          "end_line": 382,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "write_reports",
+          "line": 384,
+          "end_line": 427,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "src/reporamp/scanner.py",
+      "imports": [
+        {
+          "module": "os",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "collections.abc",
+          "name": "Iterable",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "fnmatch",
+          "name": "fnmatch",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_is_excluded",
+          "line": 29,
+          "end_line": 35,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "scan_repository",
+          "line": 38,
+          "end_line": 78,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_ai.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "sys",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "types",
+          "name": "ModuleType",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "types",
+          "name": "SimpleNamespace",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "AI_MODEL",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "AISummaryUnavailable",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "build_analysis_context",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "generate_ai_summary",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.ai",
+          "name": "generate_architecture_summary",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyEdge",
+          "alias": null,
+          "level": 0,
+          "line": 16
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 16
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 17
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "ModuleInfo",
+          "alias": null,
+          "level": 0,
+          "line": 18
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeAPIError",
+          "line": 116,
+          "end_line": 117,
+          "bases": [
+            "Exception"
+          ]
+        },
+        {
+          "name": "_Messages",
+          "line": 125,
+          "end_line": 136,
+          "bases": []
+        },
+        {
+          "name": "_Client",
+          "line": 138,
+          "end_line": 141,
+          "bases": []
+        }
+      ],
+      "functions": [
+        {
+          "name": "test_build_analysis_context_for_empty_repository",
+          "line": 23,
+          "end_line": 40,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_unresolved_import_count_excludes_known_imports",
+          "line": 42,
+          "end_line": 55,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_build_analysis_context_with_dependency",
+          "line": 57,
+          "end_line": 91,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_generate_architecture_summary",
+          "line": 93,
+          "end_line": 113,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_install_fake_sdk",
+          "line": 120,
+          "end_line": 148,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "create",
+          "line": 126,
+          "end_line": 136,
+          "is_async": false,
+          "parent_class": "_Messages"
+        },
+        {
+          "name": "__init__",
+          "line": 139,
+          "end_line": 141,
+          "is_async": false,
+          "parent_class": "_Client"
+        },
+        {
+          "name": "test_generate_ai_summary_sends_only_context",
+          "line": 151,
+          "end_line": 159,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_generate_ai_summary_requires_api_key",
+          "line": 162,
+          "end_line": 166,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_generate_ai_summary_requires_sdk",
+          "line": 169,
+          "end_line": 174,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_generate_ai_summary_failures",
+          "line": 185,
+          "end_line": 189,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_context_paths_are_relative_to_root",
+          "line": 192,
+          "end_line": 200,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_cli_ai_uses_claude_summary",
+          "line": 203,
+          "end_line": 212,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_cli_ai_falls_back_to_local_summary",
+          "line": 215,
+          "end_line": 225,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_cli_without_ai_has_no_summary",
+          "line": 228,
+          "end_line": 234,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_analyzer.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyEdge",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "analyze_dependencies",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "classify_import",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "coupling_metrics",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "find_dependency_cycles",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "parse_python_file",
+          "alias": null,
+          "level": 0,
+          "line": 11
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_parse",
+          "line": 14,
+          "end_line": 15,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_internal_import_chain",
+          "line": 18,
+          "end_line": 43,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_reports_unresolved_imports",
+          "line": 46,
+          "end_line": 56,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_finds_dependency_cycle",
+          "line": 59,
+          "end_line": 70,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_acyclic_graph_has_no_cycles",
+          "line": 73,
+          "end_line": 83,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_graph_output_is_deterministic",
+          "line": 86,
+          "end_line": 105,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_classifies_standard_library_imports",
+          "line": 107,
+          "end_line": 110,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_classifies_installed_third_party_imports",
+          "line": 113,
+          "end_line": 114,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_classifies_unknown_imports",
+          "line": 117,
+          "end_line": 118,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_classifies_empty_import",
+          "line": 121,
+          "end_line": 122,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_write_app_package",
+          "line": 124,
+          "end_line": 134,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_from_package_import_submodules",
+          "line": 137,
+          "end_line": 151,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_relative_from_dot_import_submodules",
+          "line": 154,
+          "end_line": 180,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_coupling_metrics",
+          "line": 183,
+          "end_line": 206,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_chat.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "unittest.mock",
+          "name": "Mock",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "typer",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.chat",
+          "name": "run_chat",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.chat",
+          "name": "select_model",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.ollama_client",
+          "name": "OllamaClientError",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_missing_report_exits",
+          "line": 12,
+          "end_line": 19,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_selects_explicit_model",
+          "line": 22,
+          "end_line": 28,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_selects_only_installed_model",
+          "line": 31,
+          "end_line": 39,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_prompts_when_multiple_models_are_installed",
+          "line": 42,
+          "end_line": 50,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_reprompts_for_invalid_model_number",
+          "line": 53,
+          "end_line": 63,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_exits_when_no_models_are_installed",
+          "line": 66,
+          "end_line": 74,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_exits_when_model_discovery_fails",
+          "line": 77,
+          "end_line": 85,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_cli.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_analyze_generates_reports",
+          "line": 11,
+          "end_line": 29,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_rejects_missing_directory",
+          "line": 32,
+          "end_line": 37,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_help_is_available",
+          "line": 40,
+          "end_line": 44,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_continues_past_invalid_python",
+          "line": 47,
+          "end_line": 62,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_strict_fails_on_invalid_python",
+          "line": 65,
+          "end_line": 75,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_write_hub",
+          "line": 78,
+          "end_line": 85,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_max_deps_controls_qr002",
+          "line": 88,
+          "end_line": 103,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_exclude_and_format",
+          "line": 106,
+          "end_line": 132,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_rejects_unknown_format",
+          "line": 135,
+          "end_line": 138,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "_write_cycle",
+          "line": 141,
+          "end_line": 143,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_fail_on_exits_2_for_matching_findings",
+          "line": 146,
+          "end_line": 157,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_fail_on_passes_without_matching_findings",
+          "line": 160,
+          "end_line": 168,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_fail_on_rejects_unknown_rule",
+          "line": 171,
+          "end_line": 175,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_new_rule_thresholds_and_console_scripts",
+          "line": 178,
+          "end_line": 199,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_cli_chat.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_chat_command_help",
+          "line": 10,
+          "end_line": 16,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_ask_rejects_markdown_only_output",
+          "line": 19,
+          "end_line": 32,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_existing_analyze_help_still_works",
+          "line": 35,
+          "end_line": 41,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_config.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.config",
+          "name": "load_config",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_write_pyproject",
+          "line": 13,
+          "end_line": 17,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_missing_pyproject_returns_empty_config",
+          "line": 20,
+          "end_line": 21,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_loads_all_settings",
+          "line": 24,
+          "end_line": 36,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_rejects_invalid_settings",
+          "line": 43,
+          "end_line": 47,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_cli_uses_config_and_flags_override",
+          "line": 50,
+          "end_line": 87,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_cli_reports_invalid_config",
+          "line": 90,
+          "end_line": 96,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_diff.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "diff_reports",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "has_new_problems",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "load_report",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.diff",
+          "name": "render_diff",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_analyze",
+          "line": 13,
+          "end_line": 16,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_diff_detects_changes_between_reports",
+          "line": 19,
+          "end_line": 61,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_load_report_accepts_schema_v1",
+          "line": 64,
+          "end_line": 68,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_load_report_rejects_unknown_schema",
+          "line": 72,
+          "end_line": 80,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_integrations.py",
+      "imports": [
+        {
+          "module": "ast",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "shlex",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "_hook_value",
+          "line": 12,
+          "end_line": 16,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_pre_commit_hook_command_fails_on_cycles",
+          "line": 19,
+          "end_line": 29,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_action_runs_reporamp_with_fail_on",
+          "line": 32,
+          "end_line": 37,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_mcp_server.py",
+      "imports": [
+        {
+          "module": "asyncio",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "sys",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 5
+        },
+        {
+          "module": "typer.testing",
+          "name": "CliRunner",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.cli",
+          "name": "app",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "TOOLS",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "analyze_repo",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "get_cycles",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "get_findings",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "who_imports",
+          "alias": null,
+          "level": 0,
+          "line": 9
+        },
+        {
+          "module": "reporamp.mcp_server",
+          "name": "create_server",
+          "alias": null,
+          "level": 0,
+          "line": 74
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "repo",
+          "line": 19,
+          "end_line": 24,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_repo_returns_json_report",
+          "line": 27,
+          "end_line": 32,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_get_cycles",
+          "line": 35,
+          "end_line": 36,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_who_imports",
+          "line": 39,
+          "end_line": 44,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_get_findings",
+          "line": 47,
+          "end_line": 56,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_tools_reject_missing_directory",
+          "line": 59,
+          "end_line": 61,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_tools_respect_pyproject_config",
+          "line": 64,
+          "end_line": 69,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_server_registers_tools",
+          "line": 72,
+          "end_line": 78,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_cli_mcp_reports_missing_extra",
+          "line": 81,
+          "end_line": 89,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_ollama_client.py",
+      "imports": [
+        {
+          "module": "types",
+          "name": "SimpleNamespace",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "reporamp.ollama_client",
+          "name": "OllamaChatClient",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.ollama_client",
+          "name": "OllamaClientError",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeOllama",
+          "line": 12,
+          "end_line": 28,
+          "bases": []
+        }
+      ],
+      "functions": [
+        {
+          "name": "__init__",
+          "line": 13,
+          "end_line": 17,
+          "is_async": false,
+          "parent_class": "FakeOllama"
+        },
+        {
+          "name": "chat",
+          "line": 19,
+          "end_line": 25,
+          "is_async": false,
+          "parent_class": "FakeOllama"
+        },
+        {
+          "name": "list",
+          "line": 27,
+          "end_line": 28,
+          "is_async": false,
+          "parent_class": "FakeOllama"
+        },
+        {
+          "name": "make_chunk",
+          "line": 32,
+          "end_line": 33,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_streams_response_chunks",
+          "line": 36,
+          "end_line": 54,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_passes_question_and_context_to_model",
+          "line": 57,
+          "end_line": 71,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_rejects_empty_question",
+          "line": 74,
+          "end_line": 81,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_wraps_ollama_errors",
+          "line": 84,
+          "end_line": 89,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_rejects_empty_model",
+          "line": 92,
+          "end_line": 94,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_supports_dictionary_response_chunks",
+          "line": 97,
+          "end_line": 103,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_lists_installed_models",
+          "line": 106,
+          "end_line": 119,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_lists_no_installed_models",
+          "line": 122,
+          "end_line": 125,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_package.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "reporamp",
+          "name": "__version__",
+          "alias": null,
+          "level": 0,
+          "line": 3
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_package_has_expected_initial_version",
+          "line": 6,
+          "end_line": 7,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_license_file_exists",
+          "line": 10,
+          "end_line": 12,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_parser.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "parse_python_file",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_extracts_imports_functions_and_classes",
+          "line": 8,
+          "end_line": 44,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_extracts_async_functions",
+          "line": 47,
+          "end_line": 58,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_extracts_relative_imports",
+          "line": 61,
+          "end_line": 71,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_reports_syntax_errors",
+          "line": 74,
+          "end_line": 79,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_missing_file_raises_clear_error",
+          "line": 82,
+          "end_line": 84,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_does_not_execute_source_code",
+          "line": 87,
+          "end_line": 98,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_reports_source_line_numbers",
+          "line": 101,
+          "end_line": 114,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_quality.py",
+      "imports": [
+        {
+          "module": "dataclasses",
+          "name": "FrozenInstanceError",
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyEdge",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "Finding",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "analyze_quality",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "find_cycle_findings",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "find_empty_modules",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "find_high_dependency_modules",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "find_high_fan_in_modules",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "find_orphan_modules",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "find_oversized_code",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "parse_rule_selection",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.quality",
+          "name": "select_findings",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_finding_stores_its_fields",
+          "line": 21,
+          "end_line": 34,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_finding_is_immutable",
+          "line": 37,
+          "end_line": 47,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_empty_module",
+          "line": 49,
+          "end_line": 57,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_does_not_flag_module_with_function",
+          "line": 60,
+          "end_line": 69,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_does_not_flag_docstring_only_module",
+          "line": 72,
+          "end_line": 81,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_module_with_too_many_dependencies",
+          "line": 85,
+          "end_line": 104,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_does_not_flag_module_at_threshold",
+          "line": 107,
+          "end_line": 122,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_counts_distinct_dependencies_only",
+          "line": 125,
+          "end_line": 141,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_circular_dependency",
+          "line": 144,
+          "end_line": 160,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_no_findings_for_acyclic_dependencies",
+          "line": 163,
+          "end_line": 175,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_analyze_quality_combines_findings",
+          "line": 178,
+          "end_line": 205,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_does_not_flag_empty_package_init",
+          "line": 208,
+          "end_line": 216,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_parse_rule_selection_accepts_ids_and_aliases",
+          "line": 219,
+          "end_line": 222,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_parse_rule_selection_rejects_unknown_rules",
+          "line": 225,
+          "end_line": 227,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_select_findings_filters_by_rule",
+          "line": 230,
+          "end_line": 236,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_high_fan_in_module",
+          "line": 239,
+          "end_line": 256,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_orphan_modules_but_not_entry_points",
+          "line": 259,
+          "end_line": 284,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_detects_oversized_modules_and_functions",
+          "line": 287,
+          "end_line": 305,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_report.py",
+      "imports": [
+        {
+          "module": "json",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 2
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 4
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyEdge",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "DependencyGraph",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.analyzer",
+          "name": "analyze_dependencies",
+          "alias": null,
+          "level": 0,
+          "line": 6
+        },
+        {
+          "module": "reporamp.parser",
+          "name": "parse_python_file",
+          "alias": null,
+          "level": 0,
+          "line": 7
+        },
+        {
+          "module": "reporamp.report",
+          "name": "render_json",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.report",
+          "name": "render_markdown",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        },
+        {
+          "module": "reporamp.report",
+          "name": "write_reports",
+          "alias": null,
+          "level": 0,
+          "line": 8
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "build_analysis",
+          "line": 11,
+          "end_line": 35,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_markdown_contains_summary_and_definitions",
+          "line": 38,
+          "end_line": 47,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_json_has_expected_schema",
+          "line": 50,
+          "end_line": 58,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_json_output_is_deterministic",
+          "line": 61,
+          "end_line": 67,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_writes_both_report_files",
+          "line": 70,
+          "end_line": 84,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_rejects_file_as_output_directory",
+          "line": 87,
+          "end_line": 93,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_empty_analysis_produces_valid_reports",
+          "line": 96,
+          "end_line": 107,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_write_reports_markdown_only",
+          "line": 110,
+          "end_line": 116,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_markdown_includes_mermaid_graph_with_cycle_edges",
+          "line": 119,
+          "end_line": 144,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_mermaid_graph_is_truncated_to_most_connected_nodes",
+          "line": 147,
+          "end_line": 159,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_reports_include_coupling_metrics",
+          "line": 162,
+          "end_line": 175,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    },
+    {
+      "path": "tests/test_scanner.py",
+      "imports": [
+        {
+          "module": "pathlib",
+          "name": "Path",
+          "alias": null,
+          "level": 0,
+          "line": 1
+        },
+        {
+          "module": "pytest",
+          "name": null,
+          "alias": null,
+          "level": 0,
+          "line": 3
+        },
+        {
+          "module": "reporamp.scanner",
+          "name": "scan_repository",
+          "alias": null,
+          "level": 0,
+          "line": 5
+        }
+      ],
+      "classes": [],
+      "functions": [
+        {
+          "name": "test_finds_python_files_recursively",
+          "line": 8,
+          "end_line": 17,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_excludes_generated_and_environment_directories",
+          "line": 20,
+          "end_line": 30,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_ignores_non_python_files",
+          "line": 33,
+          "end_line": 37,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_raises_for_missing_directory",
+          "line": 40,
+          "end_line": 44,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_raises_for_file_instead_of_directory",
+          "line": 47,
+          "end_line": 52,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_returns_deterministic_order",
+          "line": 55,
+          "end_line": 63,
+          "is_async": false,
+          "parent_class": null
+        },
+        {
+          "name": "test_exclude_patterns_skip_files_and_directories",
+          "line": 66,
+          "end_line": 75,
+          "is_async": false,
+          "parent_class": null
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "source": "reporamp.ai",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "reporamp.ai",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "reporamp.analyzer",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "reporamp.chat",
+      "target": "reporamp.ollama_client"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.ai"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.chat"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.config"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.diff"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.mcp_server"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.pipeline"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.quality"
+    },
+    {
+      "source": "reporamp.cli",
+      "target": "reporamp.report"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "target": "reporamp.pipeline"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "target": "reporamp.quality"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "target": "reporamp.report"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "target": "reporamp.config"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "target": "reporamp.quality"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "target": "reporamp.scanner"
+    },
+    {
+      "source": "reporamp.quality",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "reporamp.report",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "reporamp.report",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "reporamp.report",
+      "target": "reporamp.quality"
+    },
+    {
+      "source": "tests.test_ai",
+      "target": "reporamp.ai"
+    },
+    {
+      "source": "tests.test_ai",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "tests.test_ai",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_ai",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "tests.test_analyzer",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "tests.test_analyzer",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "tests.test_chat",
+      "target": "reporamp.chat"
+    },
+    {
+      "source": "tests.test_chat",
+      "target": "reporamp.ollama_client"
+    },
+    {
+      "source": "tests.test_cli",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_cli_chat",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_config",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_config",
+      "target": "reporamp.config"
+    },
+    {
+      "source": "tests.test_diff",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_diff",
+      "target": "reporamp.diff"
+    },
+    {
+      "source": "tests.test_integrations",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "target": "reporamp.cli"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "target": "reporamp.mcp_server"
+    },
+    {
+      "source": "tests.test_ollama_client",
+      "target": "reporamp.ollama_client"
+    },
+    {
+      "source": "tests.test_package",
+      "target": "reporamp"
+    },
+    {
+      "source": "tests.test_parser",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "tests.test_quality",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "tests.test_quality",
+      "target": "reporamp.quality"
+    },
+    {
+      "source": "tests.test_report",
+      "target": "reporamp.analyzer"
+    },
+    {
+      "source": "tests.test_report",
+      "target": "reporamp.parser"
+    },
+    {
+      "source": "tests.test_report",
+      "target": "reporamp.report"
+    },
+    {
+      "source": "tests.test_scanner",
+      "target": "reporamp.scanner"
+    }
+  ],
+  "standard_library_imports": [
+    {
+      "source": "reporamp.ai",
+      "module": "json"
+    },
+    {
+      "source": "reporamp.ai",
+      "module": "os"
+    },
+    {
+      "source": "reporamp.ai",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.analyzer",
+      "module": "dataclasses"
+    },
+    {
+      "source": "reporamp.analyzer",
+      "module": "importlib.util"
+    },
+    {
+      "source": "reporamp.analyzer",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.analyzer",
+      "module": "sys"
+    },
+    {
+      "source": "reporamp.chat",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "enum"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "os"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "subprocess"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "sys"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "typing"
+    },
+    {
+      "source": "reporamp.config",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.config",
+      "module": "sys"
+    },
+    {
+      "source": "reporamp.config",
+      "module": "tomllib"
+    },
+    {
+      "source": "reporamp.diff",
+      "module": "json"
+    },
+    {
+      "source": "reporamp.diff",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "module": "json"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.ollama_client",
+      "module": "collections.abc"
+    },
+    {
+      "source": "reporamp.ollama_client",
+      "module": "typing"
+    },
+    {
+      "source": "reporamp.parser",
+      "module": "ast"
+    },
+    {
+      "source": "reporamp.parser",
+      "module": "dataclasses"
+    },
+    {
+      "source": "reporamp.parser",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.parser",
+      "module": "tokenize"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "module": "dataclasses"
+    },
+    {
+      "source": "reporamp.pipeline",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.quality",
+      "module": "ast"
+    },
+    {
+      "source": "reporamp.quality",
+      "module": "dataclasses"
+    },
+    {
+      "source": "reporamp.quality",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.report",
+      "module": "json"
+    },
+    {
+      "source": "reporamp.report",
+      "module": "pathlib"
+    },
+    {
+      "source": "reporamp.scanner",
+      "module": "collections.abc"
+    },
+    {
+      "source": "reporamp.scanner",
+      "module": "fnmatch"
+    },
+    {
+      "source": "reporamp.scanner",
+      "module": "os"
+    },
+    {
+      "source": "reporamp.scanner",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_ai",
+      "module": "json"
+    },
+    {
+      "source": "tests.test_ai",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_ai",
+      "module": "sys"
+    },
+    {
+      "source": "tests.test_ai",
+      "module": "types"
+    },
+    {
+      "source": "tests.test_analyzer",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_chat",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_chat",
+      "module": "unittest.mock"
+    },
+    {
+      "source": "tests.test_cli",
+      "module": "json"
+    },
+    {
+      "source": "tests.test_cli",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_cli_chat",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_config",
+      "module": "json"
+    },
+    {
+      "source": "tests.test_config",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_diff",
+      "module": "json"
+    },
+    {
+      "source": "tests.test_diff",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_integrations",
+      "module": "ast"
+    },
+    {
+      "source": "tests.test_integrations",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_integrations",
+      "module": "shlex"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "module": "asyncio"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "module": "sys"
+    },
+    {
+      "source": "tests.test_ollama_client",
+      "module": "types"
+    },
+    {
+      "source": "tests.test_package",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_parser",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_quality",
+      "module": "dataclasses"
+    },
+    {
+      "source": "tests.test_quality",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_report",
+      "module": "json"
+    },
+    {
+      "source": "tests.test_report",
+      "module": "pathlib"
+    },
+    {
+      "source": "tests.test_scanner",
+      "module": "pathlib"
+    }
+  ],
+  "third_party_imports": [
+    {
+      "source": "reporamp.chat",
+      "module": "typer"
+    },
+    {
+      "source": "reporamp.cli",
+      "module": "typer"
+    },
+    {
+      "source": "reporamp.mcp_server",
+      "module": "mcp.server.mcpserver"
+    },
+    {
+      "source": "reporamp.ollama_client",
+      "module": "ollama"
+    },
+    {
+      "source": "tests.test_ai",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_ai",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_chat",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_chat",
+      "module": "typer"
+    },
+    {
+      "source": "tests.test_cli",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_cli_chat",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_config",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_config",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_diff",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_diff",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_integrations",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_mcp_server",
+      "module": "typer.testing"
+    },
+    {
+      "source": "tests.test_ollama_client",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_parser",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_quality",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_report",
+      "module": "pytest"
+    },
+    {
+      "source": "tests.test_scanner",
+      "module": "pytest"
+    }
+  ],
+  "unresolved_imports": [
+    {
+      "source": "reporamp.ai",
+      "module": "anthropic"
+    },
+    {
+      "source": "reporamp.config",
+      "module": "tomli"
+    }
+  ],
+  "dependency_cycles": [],
+  "coupling": [
+    {
+      "module": "reporamp",
+      "fan_in": 2,
+      "fan_out": 0,
+      "instability": 0.0
+    },
+    {
+      "module": "reporamp.ai",
+      "fan_in": 2,
+      "fan_out": 2,
+      "instability": 0.5
+    },
+    {
+      "module": "reporamp.analyzer",
+      "fan_in": 9,
+      "fan_out": 1,
+      "instability": 0.1
+    },
+    {
+      "module": "reporamp.chat",
+      "fan_in": 2,
+      "fan_out": 1,
+      "instability": 0.333
+    },
+    {
+      "module": "reporamp.cli",
+      "fan_in": 7,
+      "fan_out": 9,
+      "instability": 0.562
+    },
+    {
+      "module": "reporamp.config",
+      "fan_in": 3,
+      "fan_out": 0,
+      "instability": 0.0
+    },
+    {
+      "module": "reporamp.diff",
+      "fan_in": 2,
+      "fan_out": 0,
+      "instability": 0.0
+    },
+    {
+      "module": "reporamp.mcp_server",
+      "fan_in": 2,
+      "fan_out": 4,
+      "instability": 0.667
+    },
+    {
+      "module": "reporamp.ollama_client",
+      "fan_in": 3,
+      "fan_out": 0,
+      "instability": 0.0
+    },
+    {
+      "module": "reporamp.parser",
+      "fan_in": 8,
+      "fan_out": 0,
+      "instability": 0.0
+    },
+    {
+      "module": "reporamp.pipeline",
+      "fan_in": 2,
+      "fan_out": 5,
+      "instability": 0.714
+    },
+    {
+      "module": "reporamp.quality",
+      "fan_in": 5,
+      "fan_out": 1,
+      "instability": 0.167
+    },
+    {
+      "module": "reporamp.report",
+      "fan_in": 3,
+      "fan_out": 3,
+      "instability": 0.5
+    },
+    {
+      "module": "reporamp.scanner",
+      "fan_in": 2,
+      "fan_out": 0,
+      "instability": 0.0
+    },
+    {
+      "module": "tests.test_ai",
+      "fan_in": 0,
+      "fan_out": 4,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_analyzer",
+      "fan_in": 0,
+      "fan_out": 2,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_chat",
+      "fan_in": 0,
+      "fan_out": 2,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_cli",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_cli_chat",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_config",
+      "fan_in": 0,
+      "fan_out": 2,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_diff",
+      "fan_in": 0,
+      "fan_out": 2,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_integrations",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_mcp_server",
+      "fan_in": 0,
+      "fan_out": 2,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_ollama_client",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_package",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_parser",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_quality",
+      "fan_in": 0,
+      "fan_out": 2,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_report",
+      "fan_in": 0,
+      "fan_out": 3,
+      "instability": 1.0
+    },
+    {
+      "module": "tests.test_scanner",
+      "fan_in": 0,
+      "fan_out": 1,
+      "instability": 1.0
+    }
+  ]
+}
