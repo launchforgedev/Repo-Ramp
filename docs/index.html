@@ -1,37 +1,303 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fff"><title>RepoRamp Docs — Quick Start</title><link rel="icon" href="assets/favicon.svg"><link rel="stylesheet" href="styles.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="RepoRamp documentation: Python codebase analysis, CLI commands, quality rules, Ollama, MCP, reports and CI integration.">
+  <title>RepoRamp Documentation</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+  <link rel="shortcut icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<header class="top"><a class="brand" href="#quick-start"><b>R</b> RepoRamp <i></i><span>Docs</span></a><div class="top-right"><button id="search-open">⌕ <span>Search documentation</span><kbd>Ctrl K</kbd></button><a href="https://github.com/launchforgedev/Repo-Ramp" target="_blank">GitHub ↗</a><button id="menu" class="mobile">☰</button></div></header>
+<header class="top">
+  <a class="brand" href="#quick-start"><b>R</b> RepoRamp <i></i><span>Documentation</span></a>
+  <div class="top-right">
+    <button id="search-open">⌕ <span>Search documentation</span><kbd>Ctrl K</kbd></button>
+    <a href="https://github.com/launchforgedev/Repo-Ramp" target="_blank" rel="noreferrer">GitHub ↗</a>
+    <button id="menu" class="mobile" aria-label="Open navigation">☰</button>
+  </div>
+</header>
+
 <div class="layout">
-<aside id="sidebar"><div class="nav-label">INTRODUCTION</div><a class="nav active" href="#quick-start">Quick Start</a><a class="nav" href="#installation">Installation</a><a class="nav" href="#requirements">Requirements</a><div class="nav-label">GUIDES</div><a class="nav" href="#analyze">Analyze a repository</a><a class="nav" href="#configuration">Configuration</a><a class="nav" href="#reports">Read your reports</a><a class="nav" href="#rules">Quality rules</a><a class="nav" href="#automation">CI and automation</a><div class="nav-label">INTEGRATIONS</div><a class="nav" href="#ai">AI architecture summary</a><a class="nav" href="#ollama">Local Ollama chat</a><a class="nav" href="#mcp">MCP server</a><a class="nav" href="#compare">Compare reports</a><div class="nav-label">REFERENCE</div><a class="nav" href="#cli">CLI reference</a><a class="nav" href="#development">Development</a><div class="side-foot">● Open source · MIT License<a href="https://github.com/launchforgedev/Repo-Ramp">View repository ↗</a></div></aside>
-<main><div class="crumb"><a href="#quick-start">Docs</a> / <span id="crumb-name">Quick Start</span></div><div class="topline"><span class="tag">GETTING STARTED</span><button id="copy-link">Copy page link ↗</button></div>
-<section id="quick-start"><h1>Quick Start</h1><p class="lead">Get started with RepoRamp in a few minutes. Install the package, analyze your first Python repository, and explore its architecture through clear, actionable reports.</p><div class="jump-links"><a href="#installation">Installation ↓</a><a href="#analyze">Run your first analysis ↓</a><a href="https://github.com/launchforgedev/Repo-Ramp" target="_blank">GitHub repository ↗</a></div><h2 id="what-you-need">What you need</h2><p>You only need a Python project and a terminal. RepoRamp reads Python source to map structure and dependencies; it does not execute the source files it analyzes.</p><div class="req-grid"><div class="req"><b>Py</b><div><strong>Python 3.10+</strong><p>Use a supported Python environment.</p></div></div><div class="req"><b>$_</b><div><strong>A terminal</strong><p>PowerShell, Command Prompt, or your usual shell.</p></div></div></div></section>
-<section id="installation"><h2>Step 1: Install RepoRamp</h2><p>Install the published package with pip. A virtual environment is recommended for project isolation.</p><div class="code"><div>Terminal <button data-copy="python -m pip install reporamp">Copy</button></div><pre>python -m pip install reporamp</pre></div><aside class="callout green"><b>✓</b><div><strong>Using a virtual environment?</strong><p>On Windows PowerShell, create one with <code>py -m venv .venv</code> and activate it with <code>\.venv\Scripts\Activate.ps1</code>.</p></div></aside></section>
-<section id="requirements"><h2>Step 2: Check your setup</h2><p>Confirm Python and RepoRamp are available in the active environment.</p><div class="code"><div>Terminal <button data-copy="python --version&#10;reporamp version&#10;reporamp analyze --help">Copy</button></div><pre>python --version
+<aside id="sidebar">
+  <div class="nav-label">START HERE</div>
+  <a class="nav active" href="#quick-start">Overview</a>
+  <a class="nav" href="#installation">Installation</a>
+  <a class="nav" href="#requirements">Requirements</a>
+  <div class="nav-label">CORE GUIDES</div>
+  <a class="nav" href="#analyze">Analyze a repository</a>
+  <a class="nav" href="#cli">CLI command reference</a>
+  <a class="nav" href="#configuration">Configuration</a>
+  <a class="nav" href="#reports">Reports and schema</a>
+  <a class="nav" href="#rules">Quality rules</a>
+  <a class="nav" href="#diff">Compare reports</a>
+  <div class="nav-label">INTEGRATIONS</div>
+  <a class="nav" href="#ollama">Ollama codebase chat</a>
+  <a class="nav" href="#mcp">MCP server</a>
+  <a class="nav" href="#ai">AI architecture summary</a>
+  <a class="nav" href="#automation">GitHub Actions</a>
+  <a class="nav" href="#precommit">pre-commit</a>
+  <div class="nav-label">DEVELOPMENT</div>
+  <a class="nav" href="#development">Development setup</a>
+  <a class="nav" href="#testing">Tests and linting</a>
+  <a class="nav" href="#troubleshooting">Troubleshooting</a>
+  <a class="nav" href="#git-workflow">Git workflow</a>
+  <a class="nav" href="#project-layout">Project layout</a>
+  <div class="side-foot">Open source · MIT License
+    <a href="https://github.com/launchforgedev/Repo-Ramp">View repository ↗</a>
+  </div>
+</aside>
+
+<main>
+<div class="crumb"><a href="#quick-start">Docs</a> / <span id="crumb-name">Overview</span></div>
+<div class="topline"><span class="tag">REPORAMP · USER AND DEVELOPER GUIDE</span><button id="copy-link">Copy page link ↗</button></div>
+
+<section id="quick-start">
+  <h1>RepoRamp Documentation</h1>
+  <p class="lead">Python Codebase Intelligence — scan, understand and improve Python repositories with structural analysis, dependency insights and actionable reports.</p>
+  <div class="jump-links">
+    <a href="#installation">Install RepoRamp ↓</a>
+    <a href="#analyze">Run an analysis ↓</a>
+    <a href="#ollama">Ollama integration ↓</a>
+    <a href="#mcp">MCP integration ↓</a>
+  </div>
+  <h2>What RepoRamp does</h2>
+  <p>RepoRamp statically scans Python source files, parses module structure, maps internal imports, builds a dependency graph, detects dependency cycles, evaluates structural quality rules and writes Markdown and JSON reports. It parses source code; it does not execute the source files being analyzed.</p>
+  <div class="req-grid">
+    <div class="req"><b>Py</b><div><strong>Python 3.10+</strong><p>Supported Python runtime.</p></div></div>
+    <div class="req"><b>CLI</b><div><strong>Terminal</strong><p>PowerShell, Command Prompt, Linux shell or macOS Terminal.</p></div></div>
+  </div>
+  <aside class="callout blue"><b>i</b><div><strong>Optional integrations</strong><p>Ollama, MCP and Anthropic AI support are optional extras. Install only the integrations you intend to use.</p></div></aside>
+</section>
+
+<section id="installation">
+  <h2>1. Installation</h2>
+  <h3>Install from PyPI</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install reporamp">Copy</button></div><pre>python -m pip install reporamp</pre></div>
+  <h3>Install from the GitHub source</h3>
+  <div class="code"><div>Terminal <button data-copy="git clone https://github.com/launchforgedev/Repo-Ramp.git&#10;cd Repo-Ramp&#10;python -m venv .venv&#10;.venv\\Scripts\\Activate.ps1&#10;python -m pip install -e &quot;.[dev]&quot;">Copy</button></div><pre>git clone https://github.com/launchforgedev/Repo-Ramp.git
+cd Repo-Ramp
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"</pre></div>
+  <p>For Linux or macOS, activate the environment with <code>source .venv/bin/activate</code>.</p>
+  <h3>Install optional integrations</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install &quot;reporamp[ollama]&quot;&#10;python -m pip install &quot;reporamp[mcp]&quot;&#10;python -m pip install &quot;reporamp[ai]&quot;">Copy</button></div><pre>python -m pip install "reporamp[ollama]"
+python -m pip install "reporamp[mcp]"
+python -m pip install "reporamp[ai]"</pre></div>
+  <p>For a source checkout, use <code>python -m pip install -e ".[ollama]"</code>, <code>python -m pip install -e ".[mcp]"</code> or <code>python -m pip install -e ".[ai]"</code>.</p>
+  <p>To install all three optional integrations alongside development tools in one source-checkout install:</p>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install -e &quot;.[dev,ollama,mcp,ai]&quot;">Copy</button></div><pre>python -m pip install -e ".[dev,ollama,mcp,ai]"</pre></div>
+</section>
+
+<section id="requirements">
+  <h2>2. Requirements and verification</h2>
+  <p>RepoRamp requires Python 3.10 or newer. Verify that the active environment can find the installed package.</p>
+  <div class="code"><div>Terminal <button data-copy="python --version&#10;python -m pip show reporamp&#10;reporamp version&#10;reporamp --help">Copy</button></div><pre>python --version
+python -m pip show reporamp
 reporamp version
-reporamp analyze --help</pre></div><p>If the command is not found, check that the environment where you installed the package is active.</p></section>
-<section id="analyze"><h2>Step 3: Analyze your first repository</h2><p>Change into the root directory of the Python project you want to inspect, then run the analyzer.</p><div class="code"><div>Terminal <button data-copy="cd path/to/your-project&#10;reporamp analyze .">Copy</button></div><pre>cd path/to/your-project
-reporamp analyze .</pre></div><p>RepoRamp scans Python modules, maps internal dependencies, detects configured quality issues, and creates reports.</p><div class="code"><div>Typical output files</div><pre>reporamp-report/
+reporamp --help</pre></div>
+  <p>If PowerShell reports that <code>reporamp</code> is not recognized, activate the environment in which RepoRamp was installed, or reinstall it using <code>python -m pip install -e .</code> from the repository root.</p>
+</section>
+
+<section id="analyze">
+  <h2>3. Analyze a repository</h2>
+  <p>Open a terminal in the Python project you want to inspect and run:</p>
+  <div class="code"><div>Terminal <button data-copy="cd path/to/your-project&#10;reporamp analyze .">Copy</button></div><pre>cd path/to/your-project
+reporamp analyze .</pre></div>
+  <p>By default, RepoRamp writes both report formats to <code>reporamp-report</code>.</p>
+  <div class="code"><div>Generated files</div><pre>reporamp-report/
 ├── report.md
-└── report.json</pre></div><aside class="callout blue"><b>i</b><div><strong>Markdown and JSON</strong><p>Use Markdown for a human-readable walkthrough and JSON when processing results with scripts or other tools.</p></div></aside></section>
-<section id="configuration"><h2>Step 4: Customize your analysis</h2><p>Pass options directly to the CLI or set project defaults in <code>pyproject.toml</code>.</p><div class="code"><div>Terminal <button data-copy="reporamp analyze . --format md&#10;reporamp analyze . --output build/reporamp&#10;reporamp analyze . --exclude tests --exclude 'migrations/*'">Copy</button></div><pre># Markdown only
+└── report.json</pre></div>
+  <h3>Choose output directory and format</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp analyze . --output build/reporamp&#10;reporamp analyze . --format md&#10;reporamp analyze . --format json&#10;reporamp analyze . --format both">Copy</button></div><pre>reporamp analyze . --output build/reporamp
 reporamp analyze . --format md
+reporamp analyze . --format json
+reporamp analyze . --format both</pre></div>
+  <h3>Exclude paths and tune thresholds</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp analyze . --exclude tests --exclude &quot;migrations/*&quot; --max-deps 8 --max-fan-in 12 --max-module-lines 1200 --max-function-lines 120">Copy</button></div><pre>reporamp analyze . --exclude tests --exclude "migrations/*" --max-deps 8 --max-fan-in 12 --max-module-lines 1200 --max-function-lines 120</pre></div>
+  <h3>Strict parsing and quality gates</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp analyze . --strict&#10;reporamp analyze . --fail-on QR003,QR002&#10;reporamp analyze . --fail-on cycles">Copy</button></div><pre>reporamp analyze . --strict
+reporamp analyze . --fail-on QR003,QR002
+reporamp analyze . --fail-on cycles</pre></div>
+  <aside class="callout blue"><b>i</b><div><strong>Parse errors</strong><p>Files that cannot be parsed are reported. Without <code>--strict</code>, parsing errors do not by themselves change the normal success exit code. With <code>--strict</code>, the command exits with code 1 when parse errors are present.</p></div></aside>
+</section>
 
-# Choose an output directory
-reporamp analyze . --output build/reporamp
+<section id="cli">
+  <h2>4. CLI command reference</h2>
+  <h3>Top-level commands</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Command</th><th>Purpose</th></tr>
+    <tr><td><code>reporamp --help</code></td><td>Show available commands.</td></tr>
+    <tr><td><code>reporamp version</code></td><td>Show installed RepoRamp version.</td></tr>
+    <tr><td><code>reporamp analyze [ROOT]</code></td><td>Analyze a Python repository and write reports.</td></tr>
+    <tr><td><code>reporamp chat</code></td><td>Ask questions using an existing JSON analysis report and Ollama.</td></tr>
+    <tr><td><code>reporamp diff BASE HEAD</code></td><td>Compare two JSON reports.</td></tr>
+    <tr><td><code>reporamp mcp</code></td><td>Run the MCP server over stdio.</td></tr>
+  </table></div>
+  <h3>Analyze options</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>--output, -o</code></td><td><code>reporamp-report</code></td><td>Directory for generated reports.</td></tr>
+    <tr><td><code>--format</code></td><td>Configured value; default <code>both</code></td><td><code>md</code>, <code>json</code> or <code>both</code>.</td></tr>
+    <tr><td><code>--strict</code></td><td>Off</td><td>Exit 1 if any Python file cannot be parsed.</td></tr>
+    <tr><td><code>--max-deps INT</code></td><td>5</td><td>QR002 threshold for outgoing internal dependencies.</td></tr>
+    <tr><td><code>--max-fan-in INT</code></td><td>10</td><td>QR004 threshold for internal importers.</td></tr>
+    <tr><td><code>--max-module-lines INT</code></td><td>1000</td><td>QR006 maximum module line count.</td></tr>
+    <tr><td><code>--max-function-lines INT</code></td><td>100</td><td>QR006 maximum function line count.</td></tr>
+    <tr><td><code>--exclude PATTERN</code></td><td>None</td><td>Repeatable glob pattern for files/directories to skip.</td></tr>
+    <tr><td><code>--fail-on RULES</code></td><td>Configured value; otherwise none</td><td>Comma-separated rule IDs; <code>cycles</code> aliases QR003. Exit 2 if a selected finding exists.</td></tr>
+    <tr><td><code>--ai</code></td><td>Off</td><td>Add optional Anthropic-generated architecture summary.</td></tr>
+    <tr><td><code>--ask</code></td><td>Off</td><td>Launch interactive Ollama codebase chat after analysis.</td></tr>
+    <tr><td><code>--model NAME</code></td><td>Interactive selection</td><td>Ollama model used with <code>--ask</code>.</td></tr>
+  </table></div>
+  <h3>Chat command</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp chat --repository . --report ./reporamp-report/report.json&#10;reporamp chat --repository . --report ./reporamp-report/report.json --model llama3.2&#10;reporamp chat --help">Copy</button></div><pre>reporamp chat --repository . --report ./reporamp-report/report.json
+reporamp chat --repository . --report ./reporamp-report/report.json --model llama3.2
+reporamp chat --help</pre></div>
+  <p>Required option: <code>--report</code>. Optional options: <code>--repository</code> (defaults to the current directory) and <code>--model</code>. The chat prompt accepts questions; type <code>exit</code> or <code>quit</code> to close the session. The current chat implementation does not define slash commands.</p>
+  <h3>Diff command</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp diff base-report/report.json head-report/report.json&#10;reporamp diff base-report/report.json head-report/report.json --fail-on-new">Copy</button></div><pre>reporamp diff base-report/report.json head-report/report.json
+reporamp diff base-report/report.json head-report/report.json --fail-on-new</pre></div>
+  <h3>MCP command</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp mcp">Copy</button></div><pre>reporamp mcp</pre></div>
+</section>
 
-# Exclude paths
-reporamp analyze . --exclude tests --exclude "migrations/*"</pre></div><h3>Project configuration</h3><div class="code"><div>pyproject.toml <button data-copy="[tool.reporamp]&#10;max_deps = 8&#10;max_fan_in = 10&#10;max_module_lines = 1000&#10;max_function_lines = 100&#10;exclude = [&quot;tests&quot;, &quot;migrations/*&quot;]&#10;fail_on = [&quot;QR003&quot;, &quot;QR002&quot;]&#10;format = &quot;both&quot;">Copy</button></div><pre>[tool.reporamp]
+<section id="configuration">
+  <h2>5. Project configuration</h2>
+  <p>RepoRamp reads <code>[tool.reporamp]</code> from the <code>pyproject.toml</code> in the repository being analyzed. Command-line flags override configured defaults. An explicit <code>--exclude</code> list replaces the configured exclude list.</p>
+  <div class="code"><div>pyproject.toml <button data-copy="[tool.reporamp]&#10;max_deps = 8&#10;max_fan_in = 10&#10;max_module_lines = 1000&#10;max_function_lines = 100&#10;exclude = [&quot;tests&quot;, &quot;migrations/*&quot;]&#10;fail_on = [&quot;QR003&quot;, &quot;QR002&quot;]&#10;format = &quot;both&quot;">Copy</button></div><pre>[tool.reporamp]
 max_deps = 8
 max_fan_in = 10
 max_module_lines = 1000
 max_function_lines = 100
 exclude = ["tests", "migrations/*"]
 fail_on = ["QR003", "QR002"]
-format = "both"</pre></div><div class="table-wrap"><table><tr><th>Option</th><th>Purpose</th></tr><tr><td><code>--format</code></td><td>Choose md, json, or both.</td></tr><tr><td><code>--output</code></td><td>Choose the report directory.</td></tr><tr><td><code>--exclude PATTERN</code></td><td>Skip matching paths; repeatable.</td></tr><tr><td><code>--strict</code></td><td>Exit 1 when a file cannot be parsed.</td></tr><tr><td><code>--fail-on RULES</code></td><td>Exit 2 when selected findings exist.</td></tr></table></div></section>
-<section id="reports"><h2>Understand your report</h2><p>The report gives you a practical overview of your codebase structure.</p><div class="feature"><span>01</span><div><strong>Architecture graph</strong><p>See internal module dependencies and circular import paths.</p></div></div><div class="feature"><span>02</span><div><strong>Coupling metrics</strong><p>Inspect fan-in, fan-out, and instability to understand dependency pressure.</p></div></div><div class="feature"><span>03</span><div><strong>Code inventory</strong><p>Review modules, imports, classes, functions, and unresolved imports.</p></div></div><div class="feature"><span>04</span><div><strong>Quality findings</strong><p>Review rule IDs and structural signals worth investigating.</p></div></div></section>
-<section id="rules"><h2>Quality rules</h2><p>These checks guide refactoring and code review. Treat findings as signals to investigate, not automatic proof of a defect.</p><div class="table-wrap"><table><tr><th>Rule</th><th>Finding</th><th>What it flags</th></tr><tr><td><mark>QR001</mark></td><td>Empty module</td><td>Python modules with no meaningful content.</td></tr><tr><td><mark>QR002</mark></td><td>High fan-out</td><td>Too many outgoing internal dependencies.</td></tr><tr><td><mark>QR003</mark></td><td>Dependency cycle</td><td>Circular dependencies in the module graph.</td></tr><tr><td><mark>QR004</mark></td><td>High fan-in</td><td>Modules imported by many internal modules.</td></tr><tr><td><mark>QR005</mark></td><td>Orphan module</td><td>Modules with no internal importers; recognized entry points are skipped.</td></tr><tr><td><mark>QR006</mark></td><td>Oversized code</td><td>Modules or functions over configured line-count thresholds.</td></tr></table></div></section>
-<section id="automation"><h2>Automate checks in GitHub Actions</h2><p>Run RepoRamp on pull requests to catch selected structural issues before merging. Confirm action inputs and release tags in the repository before adopting this example.</p><div class="code"><div>.github/workflows/reporamp.yml <button data-copy="name: RepoRamp&#10;on: [pull_request]&#10;jobs:&#10;  reporamp:&#10;    runs-on: ubuntu-latest&#10;    steps:&#10;      - uses: actions/checkout@v4&#10;      - uses: launchforgedev/Repo-Ramp@main&#10;        with:&#10;          fail-on: QR003,QR002&#10;          args: --max-deps 8">Copy</button></div><pre>name: RepoRamp
+format = "both"</pre></div>
+  <div class="table-wrap"><table>
+    <tr><th>Setting</th><th>Type</th><th>Meaning</th></tr>
+    <tr><td><code>max_deps</code></td><td>Integer ≥ 0</td><td>QR002 dependency threshold.</td></tr>
+    <tr><td><code>max_fan_in</code></td><td>Integer ≥ 0</td><td>QR004 importer threshold.</td></tr>
+    <tr><td><code>max_module_lines</code></td><td>Integer ≥ 0</td><td>QR006 module-size threshold.</td></tr>
+    <tr><td><code>max_function_lines</code></td><td>Integer ≥ 0</td><td>QR006 function-size threshold.</td></tr>
+    <tr><td><code>exclude</code></td><td>List of strings</td><td>Glob patterns for paths to exclude.</td></tr>
+    <tr><td><code>fail_on</code></td><td>String or list of strings</td><td>Rule IDs to use as quality gates.</td></tr>
+    <tr><td><code>format</code></td><td><code>md</code>, <code>json</code>, <code>both</code></td><td>Default report format.</td></tr>
+  </table></div>
+  <p>Unknown keys and invalid values are rejected rather than silently ignored.</p>
+</section>
+
+<section id="reports">
+  <h2>6. Reports and JSON schema</h2>
+  <h3>Markdown report</h3>
+  <p><code>report.md</code> is the human-readable report. Depending on the analyzed project, it can include the summary, module inventory, dependency graph, dependency cycles, imports, quality findings, parse errors, coupling metrics and architecture summary.</p>
+  <h3>JSON report</h3>
+  <p><code>report.json</code> is the machine-readable representation for scripts, tools and report comparison. It contains a top-level <code>schema_version</code>.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Schema</th><th>Fields</th></tr>
+    <tr><td>1</td><td>Summary, quality findings, modules, dependencies, standard-library imports, third-party imports, unresolved imports and dependency cycles.</td></tr>
+    <tr><td>2</td><td>Adds parse errors, <code>summary.parse_errors</code> and coupling metrics: module, fan-in, fan-out and instability.</td></tr>
+  </table></div>
+  <p>The report comparison command accepts schema versions 1 and 2. Report lists are sorted for deterministic output.</p>
+  <h3>Coupling metrics</h3>
+  <ul><li><strong>Fan-in (Ca):</strong> number of internal modules that import a module.</li><li><strong>Fan-out (Ce):</strong> number of internal modules a module depends on.</li><li><strong>Instability (I):</strong> <code>Ce / (Ca + Ce)</code>; it is null when there are no internal edges.</li></ul>
+</section>
+
+<section id="rules">
+  <h2>7. Quality rules</h2>
+  <p>Quality findings are structural signals for code review. They are not proof of a defect and should be interpreted in context.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Rule</th><th>What it checks</th></tr>
+    <tr><td><mark>QR001</mark></td><td>Empty Python modules. Empty <code>__init__.py</code> package markers are ignored.</td></tr>
+    <tr><td><mark>QR002</mark></td><td>Modules with more outgoing internal dependencies than the configured threshold (default 5).</td></tr>
+    <tr><td><mark>QR003</mark></td><td>Circular dependencies in the internal module graph.</td></tr>
+    <tr><td><mark>QR004</mark></td><td>Modules imported by more internal modules than the configured threshold (default 10).</td></tr>
+    <tr><td><mark>QR005</mark></td><td>Orphan modules not imported by another internal module. Recognized entry points and test-related modules are skipped.</td></tr>
+    <tr><td><mark>QR006</mark></td><td>Modules or functions exceeding configured line-count thresholds (defaults 1000 and 100).</td></tr>
+  </table></div>
+</section>
+
+<section id="diff">
+  <h2>8. Compare reports</h2>
+  <p>Generate a JSON report for each revision, then compare the baseline and updated reports.</p>
+  <div class="code"><div>Terminal <button data-copy="reporamp analyze . --format json --output base-report&#10;reporamp analyze . --format json --output head-report&#10;reporamp diff base-report/report.json head-report/report.json --fail-on-new">Copy</button></div><pre># Run against the baseline revision
+reporamp analyze . --format json --output base-report
+
+# Run against the updated revision
+reporamp analyze . --format json --output head-report
+
+# Compare and fail if new cycles/findings are introduced
+reporamp diff base-report/report.json head-report/report.json --fail-on-new</pre></div>
+  <p>The diff reports added and removed modules and dependencies, plus new and resolved cycles and findings. With <code>--fail-on-new</code>, the command exits with code 2 when new cycles or findings are present.</p>
+</section>
+
+<section id="ollama">
+  <h2>9. Local Ollama codebase chat</h2>
+  <p>RepoRamp can use an Ollama model running locally to answer questions about the generated analysis report.</p>
+  <h3>Install Ollama and download a model</h3>
+  <p>Install Ollama from <a href="https://ollama.com/download" target="_blank" rel="noreferrer">ollama.com/download</a>, then pull a model:</p>
+  <div class="code"><div>Terminal <button data-copy="ollama --version&#10;ollama pull llama3.2&#10;ollama list">Copy</button></div><pre>ollama --version
+ollama pull llama3.2
+ollama list</pre></div>
+  <h3>Install RepoRamp's Ollama extra</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install &quot;reporamp[ollama]&quot;">Copy</button></div><pre>python -m pip install "reporamp[ollama]"</pre></div>
+  <p>For a source checkout, use <code>python -m pip install -e ".[ollama]"</code>.</p>
+  <h3>Analyze and open chat in a separate terminal</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp analyze . --format both --ask&#10;reporamp analyze . --format both --ask --model llama3.2">Copy</button></div><pre>reporamp analyze . --format both --ask
+
+# Specify an installed model
+reporamp analyze . --format both --ask --model llama3.2</pre></div>
+  <p>On Windows, RepoRamp starts the chat in a new console window. On other platforms, chat runs in the current terminal. The analysis must generate <code>report.json</code>; Markdown-only output is not supported with <code>--ask</code>.</p>
+  <h3>Chat from an existing report</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp chat --repository . --report ./reporamp-report/report.json&#10;reporamp chat --repository . --report ./reporamp-report/report.json --model llama3.2">Copy</button></div><pre>reporamp chat --repository . --report ./reporamp-report/report.json
+reporamp chat --repository . --report ./reporamp-report/report.json --model llama3.2</pre></div>
+  <p>When no model is specified, RepoRamp discovers installed Ollama models. It selects the only model automatically, or asks you to choose when multiple models are installed. Type <code>exit</code> or <code>quit</code> to leave chat.</p>
+  <aside class="callout blue"><b>i</b><div><strong>Context and limitations</strong><p>The current chat passes the generated JSON report as context for each question. It is not a full source-code index, and it does not currently expose slash commands or persistent conversation history.</p></div></aside>
+</section>
+
+<section id="mcp">
+  <h2>10. MCP server integration</h2>
+  <p>RepoRamp exposes repository analysis functions as tools through the Model Context Protocol (MCP). The server uses stdio transport.</p>
+  <h3>Install the MCP extra</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install &quot;reporamp[mcp]&quot;">Copy</button></div><pre>python -m pip install "reporamp[mcp]"</pre></div>
+  <p>For a source checkout: <code>python -m pip install -e ".[mcp]"</code>.</p>
+  <h3>Register with Claude Code</h3>
+  <div class="code"><div>Terminal <button data-copy="claude mcp add reporamp -- reporamp mcp&#10;claude mcp list">Copy</button></div><pre>claude mcp add reporamp -- reporamp mcp
+claude mcp list</pre></div>
+  <h3>Available MCP tools</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Tool</th><th>Arguments</th><th>Returns</th></tr>
+    <tr><td><code>analyze_repo</code></td><td><code>path</code></td><td>Full RepoRamp JSON analysis report.</td></tr>
+    <tr><td><code>get_cycles</code></td><td><code>path</code></td><td>Dependency cycles as lists of module names.</td></tr>
+    <tr><td><code>who_imports</code></td><td><code>path</code>, <code>module</code></td><td>Internal modules that import the requested dotted module name.</td></tr>
+    <tr><td><code>get_findings</code></td><td><code>path</code>, optional <code>rule_id</code></td><td>Quality findings, optionally filtered by rule ID or <code>cycles</code>.</td></tr>
+  </table></div>
+  <p>Each tool analyzes the repository path supplied in its arguments and respects that repository's <code>[tool.reporamp]</code> configuration.</p>
+  <aside class="callout blue"><b>i</b><div><strong>Why does <code>reporamp mcp</code> appear to wait?</strong><p>This command starts an MCP server over standard input/output. It is not an interactive shell. When launched directly without an MCP client, it may remain waiting for protocol input. Register it with an MCP client such as Claude Code.</p></div></aside>
+  <h3>Run the server manually</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp mcp">Copy</button></div><pre>reporamp mcp</pre></div>
+  <p>Manual launch is useful when an MCP client configuration starts the process and connects to its stdio stream. Do not send ordinary text commands into the server terminal.</p>
+</section>
+
+<section id="ai">
+  <h2>11. Optional AI architecture summary</h2>
+  <p>The optional Anthropic integration adds an AI-generated architecture summary to the report. It is independent of the Ollama chat feature.</p>
+  <h3>Install the AI extra</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install &quot;reporamp[ai]&quot;">Copy</button></div><pre>python -m pip install "reporamp[ai]"</pre></div>
+  <h3>Set the API key</h3>
+  <div class="code"><div>PowerShell <button data-copy="$env:ANTHROPIC_API_KEY = &quot;your-api-key&quot;">Copy</button></div><pre>$env:ANTHROPIC_API_KEY = "your-api-key"</pre></div>
+  <div class="code"><div>Linux / macOS <button data-copy="export ANTHROPIC_API_KEY=&quot;your-api-key&quot;">Copy</button></div><pre>export ANTHROPIC_API_KEY="your-api-key"</pre></div>
+  <h3>Run analysis with AI summary</h3>
+  <div class="code"><div>Terminal <button data-copy="reporamp analyze . --ai">Copy</button></div><pre>reporamp analyze . --ai</pre></div>
+  <p>RepoRamp sends structured analysis context (module paths, internal dependency edges, unresolved-import count and dependency cycles) to the Anthropic API; it does not send the repository's source files through this feature. If the key, SDK or API request is unavailable, RepoRamp reports the reason and falls back to its built-in local architecture summary.</p>
+</section>
+
+<section id="automation">
+  <h2>12. GitHub Actions</h2>
+  <p>The repository includes a composite GitHub Action in <code>action.yml</code>. It installs RepoRamp from the checked-out action path and runs the analyzer.</p>
+  <div class="code"><div>.github/workflows/reporamp.yml <button data-copy="name: RepoRamp&#10;on: [pull_request]&#10;jobs:&#10;  reporamp:&#10;    runs-on: ubuntu-latest&#10;    steps:&#10;      - uses: actions/checkout@v4&#10;      - uses: launchforgedev/Repo-Ramp@main&#10;        with:&#10;          fail-on: QR003,QR002&#10;          args: --max-deps 8">Copy</button></div><pre>name: RepoRamp
 on: [pull_request]
 jobs:
   reporamp:
@@ -41,27 +307,162 @@ jobs:
       - uses: launchforgedev/Repo-Ramp@main
         with:
           fail-on: QR003,QR002
-          args: --max-deps 8</pre></div></section>
-<section id="ai"><h2>Optional AI architecture summary</h2><p>The optional Claude integration adds an AI-generated architecture summary. It is opt-in and disabled by default.</p><div class="code"><div>Terminal <button data-copy="python -m pip install 'reporamp[ai]'&#10;# Set ANTHROPIC_API_KEY in your environment&#10;reporamp analyze . --ai">Copy</button></div><pre>python -m pip install "reporamp[ai]"
-# Set ANTHROPIC_API_KEY in your environment
-reporamp analyze . --ai</pre></div><aside class="callout blue"><b>i</b><div><strong>Review data handling</strong><p>Check the current repository documentation and privacy requirements before enabling an external AI provider.</p></div></aside></section>
-<section id="ollama"><h2>Local Ollama chat</h2><p>Ask questions about a repository using a local Ollama model. Install the optional extra and ensure Ollama is running with at least one model downloaded.</p><div class="code"><div>Terminal <button data-copy="python -m pip install 'reporamp[ollama]'&#10;ollama list&#10;reporamp analyze . --ask">Copy</button></div><pre>python -m pip install "reporamp[ollama]"
-ollama list
-reporamp analyze . --ask</pre></div><p>You can also start a chat from an existing report with <code>reporamp chat</code>. Specify <code>--model</code> to select a local model. Check your installed version's help output for supported options.</p></section>
-<section id="mcp"><h2>MCP server</h2><p>The optional Model Context Protocol integration allows compatible AI clients to query repository structure through RepoRamp tools.</p><div class="code"><div>Terminal <button data-copy="python -m pip install 'reporamp[mcp]'&#10;reporamp mcp">Copy</button></div><pre>python -m pip install "reporamp[mcp]"
-reporamp mcp</pre></div><p>See the current repository instructions for client-specific configuration and the tools available in your installed version.</p></section>
-<section id="compare"><h2>Compare reports</h2><p>Generate JSON reports for two revisions and compare them to identify new structural issues.</p><div class="code"><div>Terminal <button data-copy="reporamp analyze . --format json -o base-report&#10;reporamp analyze . --format json -o head-report&#10;reporamp diff base-report/report.json head-report/report.json --fail-on-new">Copy</button></div><pre>reporamp analyze . --format json -o base-report
-reporamp analyze . --format json -o head-report
-reporamp diff base-report/report.json head-report/report.json --fail-on-new</pre></div></section>
-<section id="cli"><h2>CLI reference</h2><p>Use help to inspect the options supported by your installed version.</p><div class="code"><div>Terminal <button data-copy="reporamp analyze --help&#10;reporamp chat --help&#10;reporamp version">Copy</button></div><pre>reporamp analyze --help
-reporamp chat --help
-reporamp version</pre></div><div class="table-wrap"><table><tr><th>Exit code</th><th>Meaning</th></tr><tr><td>0</td><td>Analysis completed successfully.</td></tr><tr><td>1</td><td>Execution error, or parse error in strict mode.</td></tr><tr><td>2</td><td>A configured fail-on rule matched.</td></tr></table></div></section>
-<section id="development"><h2>Contribute to RepoRamp</h2><p>Bug reports, documentation improvements, and pull requests are welcome. Run tests and the linter before submitting changes.</p><div class="code"><div>Terminal <button data-copy="git clone https://github.com/launchforgedev/Repo-Ramp.git&#10;cd Repo-Ramp&#10;python -m pip install -e '.[dev]'&#10;pytest&#10;python -m ruff check .">Copy</button></div><pre>git clone https://github.com/launchforgedev/Repo-Ramp.git
+          args: --max-deps 8</pre></div>
+  <div class="table-wrap"><table>
+    <tr><th>Input</th><th>Default</th><th>Purpose</th></tr>
+    <tr><td><code>path</code></td><td><code>.</code></td><td>Repository directory to analyze.</td></tr>
+    <tr><td><code>fail-on</code></td><td><code>QR003</code></td><td>Rule IDs that fail the job; empty disables gating.</td></tr>
+    <tr><td><code>output</code></td><td><code>reporamp-report</code></td><td>Report output directory.</td></tr>
+    <tr><td><code>args</code></td><td>Empty</td><td>Additional analyze arguments.</td></tr>
+    <tr><td><code>python-version</code></td><td><code>3.12</code></td><td>Python runtime used by the action.</td></tr>
+  </table></div>
+  <p>Pin the action to a release tag or commit SHA for reproducible workflows once your release policy is established.</p>
+</section>
+
+<section id="precommit">
+  <h2>13. pre-commit hook</h2>
+  <p>The repository includes a pre-commit hook definition in <code>.pre-commit-hooks.yaml</code>. Add RepoRamp to your project's pre-commit configuration:</p>
+  <div class="code"><div>.pre-commit-config.yaml <button data-copy="repos:&#10;  - repo: https://github.com/launchforgedev/Repo-Ramp&#10;    rev: main&#10;    hooks:&#10;      - id: reporamp&#10;        args: [&quot;--fail-on&quot;, &quot;QR003,QR002&quot;]">Copy</button></div><pre>repos:
+  - repo: https://github.com/launchforgedev/Repo-Ramp
+    rev: main
+    hooks:
+      - id: reporamp
+        args: ["--fail-on", "QR003,QR002"]</pre></div>
+  <p>The hook analyzes the repository when Python files change and writes reports to <code>.reporamp-report/</code>. Add that report directory to your <code>.gitignore</code>.</p>
+  <h3>Install and run pre-commit</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install pre-commit&#10;pre-commit install&#10;pre-commit run --all-files">Copy</button></div><pre>python -m pip install pre-commit
+pre-commit install
+pre-commit run --all-files</pre></div>
+</section>
+
+<section id="development">
+  <h2>14. Development setup</h2>
+  <div class="code"><div>PowerShell <button data-copy="git clone https://github.com/launchforgedev/Repo-Ramp.git&#10;cd Repo-Ramp&#10;python -m venv .venv&#10;.venv\\Scripts\\Activate.ps1&#10;python -m pip install -e &quot;.[dev]&quot;">Copy</button></div><pre>git clone https://github.com/launchforgedev/Repo-Ramp.git
 cd Repo-Ramp
-python -m pip install -e ".[dev]"
-pytest
-python -m ruff check .</pre></div><div class="next-card"><div><small>NEXT STEP</small><h3>Explore the source code</h3><p>Read the code, open an issue, or contribute an improvement.</p><a href="https://github.com/launchforgedev/Repo-Ramp" target="_blank">GitHub repository ↗</a>　<a href="https://pypi.org/project/reporamp/" target="_blank">PyPI package ↗</a></div><b>→</b></div></section>
-<footer><span>RepoRamp · MIT License</span><span>Documentation for developers, by developers.</span><a href="#quick-start">Back to top ↑</a></footer>
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"</pre></div>
+  <p>For Linux/macOS, use <code>source .venv/bin/activate</code> after creating the environment.</p>
+</section>
+
+<section id="testing">
+  <h2>15. Tests and linting</h2>
+  <h3>Run the full test suite</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pytest -v">Copy</button></div><pre>python -m pytest -v</pre></div>
+  <h3>Run focused integration tests</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pytest tests/test_ollama_client.py tests/test_chat.py -v&#10;python -m pytest tests/test_mcp_server.py -v&#10;python -m pytest tests/test_ai.py -v">Copy</button></div><pre>python -m pytest tests/test_ollama_client.py tests/test_chat.py -v
+python -m pytest tests/test_mcp_server.py -v
+python -m pytest tests/test_ai.py -v</pre></div>
+  <h3>Run Ruff</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m ruff check .&#10;python -m ruff format --check .">Copy</button></div><pre>python -m ruff check .
+python -m ruff format --check .</pre></div>
+  <p>To apply formatting, run <code>python -m ruff format .</code>.</p>
+</section>
+
+<section id="troubleshooting">
+  <h2>16. Troubleshooting</h2>
+  <h3><code>reporamp</code> is not recognized</h3>
+  <p>Activate the Python environment where RepoRamp is installed, then run <code>python -m pip install -e .</code> from the project root or reinstall the PyPI package.</p>
+  <h3>Ollama support is not installed</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install &quot;reporamp[ollama]&quot;">Copy</button></div><pre>python -m pip install "reporamp[ollama]"</pre></div>
+  <h3>No Ollama models are installed</h3>
+  <div class="code"><div>Terminal <button data-copy="ollama pull llama3.2&#10;ollama list">Copy</button></div><pre>ollama pull llama3.2
+ollama list</pre></div>
+  <h3>Ollama connection fails</h3>
+  <p>Check that the Ollama application/service is running and that <code>ollama list</code> can reach it. Confirm that the selected model appears in the list.</p>
+  <h3>MCP dependency is missing</h3>
+  <div class="code"><div>Terminal <button data-copy="python -m pip install &quot;reporamp[mcp]&quot;">Copy</button></div><pre>python -m pip install "reporamp[mcp]"</pre></div>
+  <h3><code>reporamp mcp</code> waits without showing a prompt</h3>
+  <p>This is expected for a stdio MCP server. It waits for an MCP client to start a protocol session. Register it with Claude Code or another compatible MCP client instead of treating it like a shell prompt.</p>
+  <h3><code>--ask</code> rejects Markdown-only reports</h3>
+  <p>Use <code>--format json</code> or <code>--format both</code>, because chat reads <code>report.json</code>.</p>
+</section>
+
+<section id="git-workflow">
+  <h2>17. Git workflow for contributors</h2>
+  <p>Create a feature branch, validate your changes, commit only the intended files, and push the branch to GitHub.</p>
+  <div class="code"><div>PowerShell / Terminal <button data-copy="git switch -c feat/your-feature&#10;python -m pytest -v&#10;python -m ruff check .&#10;git status&#10;git add src/reporamp/your_file.py tests/your_test.py&#10;git commit -m &quot;feat: describe your change&quot;&#10;git push -u origin feat/your-feature">Copy</button></div><pre>git switch -c feat/your-feature
+
+# Validate
+python -m pytest -v
+python -m ruff check .
+
+# Review and stage only the intended files
+git status
+git add src/reporamp/your_file.py tests/your_test.py
+git commit -m "feat: describe your change"
+
+# Publish the new branch and set its upstream
+git push -u origin feat/your-feature</pre></div>
+  <p>For later commits on a branch that already tracks its remote, use <code>git push</code>. Use <code>git status</code> before staging so generated reports, local environments and unrelated changes are not accidentally committed.</p>
+</section>
+
+<section id="project-layout">
+  <h2>18. Project layout</h2>
+  <div class="code"><div>Repository structure</div><pre>Repo-Ramp/
+├── .github/
+│   └── workflows/
+├── assets/
+│   └── reporamp-logo.png
+├── docs/
+│   ├── assets/
+│   │   └── favicon.png
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+├── src/
+│   └── reporamp/
+│       ├── ai.py
+│       ├── analyzer.py
+│       ├── chat.py
+│       ├── cli.py
+│       ├── config.py
+│       ├── diff.py
+│       ├── mcp_server.py
+│       ├── ollama_client.py
+│       ├── parser.py
+│       ├── pipeline.py
+│       ├── quality.py
+│       ├── report.py
+│       └── scanner.py
+├── tests/
+├── action.yml
+├── pyproject.toml
+├── README.md
+└── LICENSE</pre></div>
+  <p>The brand image is retained as an asset in the repository but is not displayed as a documentation or README banner. A cropped version of its mark is used only as the documentation favicon.</p>
+</section>
+
+<footer>
+  <span>RepoRamp · MIT License</span>
+  <span>Python Codebase Intelligence</span>
+  <a href="#quick-start">Back to top ↑</a>
+</footer>
 </main>
-<aside class="right"><b>ON THIS PAGE</b><a class="toc active" href="#quick-start">Quick Start</a><a class="toc" href="#what-you-need">What you need</a><a class="toc" href="#installation">Step 1: Install RepoRamp</a><a class="toc" href="#requirements">Step 2: Check setup</a><a class="toc" href="#analyze">Step 3: Analyze</a><a class="toc" href="#configuration">Step 4: Customize</a><a class="toc" href="#reports">Understand your report</a><a class="toc" href="#rules">Quality rules</a><div class="help"><b>✳</b><strong>Need help?</strong><p>Browse the source or open an issue if something does not behave as expected.</p><a href="https://github.com/launchforgedev/Repo-Ramp/issues" target="_blank">Report an issue ↗</a></div></aside></div>
-<div id="overlay" hidden><div class="dialog"><div class="dialog-head"><strong>Search documentation</strong><button id="close-search">Esc</button></div><input id="query" placeholder="Search pages, guides, commands…"><div id="results"></div><div class="dialog-foot">Press Esc to close</div></div></div><script src="app.js"></script></body></html>
+
+<aside class="right">
+  <b>ON THIS PAGE</b>
+  <a class="toc active" href="#quick-start">Overview</a>
+  <a class="toc" href="#installation">Installation</a>
+  <a class="toc" href="#analyze">Analyze</a>
+  <a class="toc" href="#cli">CLI reference</a>
+  <a class="toc" href="#configuration">Configuration</a>
+  <a class="toc" href="#reports">Reports</a>
+  <a class="toc" href="#rules">Quality rules</a>
+  <a class="toc" href="#ollama">Ollama</a>
+  <a class="toc" href="#mcp">MCP</a>
+  <div class="help"><b>✳</b><strong>Need help?</strong><p>Browse the source or open an issue if something does not behave as expected.</p><a href="https://github.com/launchforgedev/Repo-Ramp/issues" target="_blank" rel="noreferrer">Report an issue ↗</a></div>
+</aside>
+</div>
+
+<div id="overlay" hidden>
+  <div class="dialog">
+    <div class="dialog-head"><strong>Search documentation</strong><button id="close-search">Esc</button></div>
+    <input id="query" placeholder="Search commands, guides, integrations…">
+    <div id="results"></div>
+    <div class="dialog-foot">Press Esc to close</div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
