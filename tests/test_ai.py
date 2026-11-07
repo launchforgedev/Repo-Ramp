@@ -39,7 +39,21 @@ def test_build_analysis_context_for_empty_repository() -> None:
     "cycles": [],
 }
 
+def test_unresolved_import_count_excludes_known_imports():
+    graph = DependencyGraph(
+        modules=("main",),
+        edges=(),
+        unresolved_imports=(
+            ("main", "json"),
+            ("main", "typer"),
+            ("main", "reporamp_module_that_does_not_exist"),
+        ),
+    )
 
+    context = build_analysis_context([], graph)
+
+    assert context["unresolved_import_count"] == 1
+    
 def test_build_analysis_context_with_dependency() -> None:
     graph = DependencyGraph(
         modules=("main", "auth"),

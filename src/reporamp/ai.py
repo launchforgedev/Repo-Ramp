@@ -5,7 +5,11 @@ import json
 import os
 from pathlib import Path
 
-from reporamp.analyzer import DependencyGraph, find_dependency_cycles
+from reporamp.analyzer import (
+    DependencyGraph,
+    classify_import,
+    find_dependency_cycles,
+)
 from reporamp.parser import ModuleInfo
 
 
@@ -19,7 +23,11 @@ def build_analysis_context(
     When ``root`` is given, module paths are made relative to it.
     """
     cycles = find_dependency_cycles(graph)
-
+    unresolved_count = sum(
+    1
+    for _, imported in graph.unresolved_imports
+    if classify_import(imported) == "unresolved"
+)
     def display(path: Path) -> str:
         if root is not None:
             try:
@@ -38,7 +46,7 @@ def build_analysis_context(
             {"source": edge.source, "target": edge.target}
             for edge in graph.edges
         ],
-        "unresolved_import_count": len(graph.unresolved_imports),
+        "unresolved_import_count": unresolved_count,
         "cycle_count": len(cycles),
         "cycles": [list(cycle) for cycle in cycles],
     }
