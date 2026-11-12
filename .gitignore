@@ -35,3 +35,7 @@ Thumbs.db
 #created folders
 test-report/
 recovery-backup/
+# Generated reports
+ollama-test/
+strict-report/
+reporamp-report/

@@ -1,4 +1,3 @@
-
 """Optional AI-powered insights for RepoRamp."""
 
 import json
@@ -24,10 +23,11 @@ def build_analysis_context(
     """
     cycles = find_dependency_cycles(graph)
     unresolved_count = sum(
-    1
-    for _, imported in graph.unresolved_imports
-    if classify_import(imported) == "unresolved"
-)
+        1
+        for _, imported in graph.unresolved_imports
+        if classify_import(imported) == "unresolved"
+    )
+
     def display(path: Path) -> str:
         if root is not None:
             try:
@@ -38,13 +38,10 @@ def build_analysis_context(
 
     return {
         "module_count": len(modules),
-        "module_names": sorted(
-            display(module.path) for module in modules
-        ),
+        "module_names": sorted(display(module.path) for module in modules),
         "dependency_count": len(graph.edges),
         "dependencies": [
-            {"source": edge.source, "target": edge.target}
-            for edge in graph.edges
+            {"source": edge.source, "target": edge.target} for edge in graph.edges
         ],
         "unresolved_import_count": unresolved_count,
         "cycle_count": len(cycles),
@@ -74,10 +71,7 @@ def generate_architecture_summary(
         lines.append("Module relationships:")
 
         for dependency in dependencies:
-            lines.append(
-                f"- {dependency['source']} depends on "
-                f"{dependency['target']}."
-            )
+            lines.append(f"- {dependency['source']} depends on {dependency['target']}.")
     else:
         lines.append("No internal module dependencies were detected.")
 

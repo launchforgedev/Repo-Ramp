@@ -116,6 +116,7 @@ class OllamaChatClient:
                 model=self.model,
                 messages=messages,
                 stream=True,
+                options={"num_ctx": 8192},
             )
 
             for chunk in response_stream:

@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -83,3 +82,27 @@ def test_exits_when_model_discovery_fails(monkeypatch):
         select_model(client, None)
 
     assert exc_info.value.exit_code == 1
+
+
+def test_condense_report_drops_imports_and_truncates():
+    import json
+
+    from reporamp.chat import MAX_CONTEXT_CHARS, condense_report
+
+    report = {
+        "modules": [
+            {
+                "path": "a.py",
+                "imports": [{"module": "os"}] * 3,
+                "classes": [{"name": "C"}],
+                "functions": [{"name": "f"}],
+            }
+        ]
+    }
+    out = json.loads(condense_report(json.dumps(report)))
+    assert out["modules"] == [
+        {"path": "a.py", "classes": ["C"], "functions": ["f"], "import_count": 3}
+    ]
+    assert condense_report("x" * (MAX_CONTEXT_CHARS + 10)).endswith(
+        "[report truncated]"
+    )
