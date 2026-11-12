@@ -1,13 +1,13 @@
 """Interactive RepoRamp Ollama terminal."""
 
+import json
 from pathlib import Path
 
 import typer
 
-from reporamp.ollama_client import (
-    OllamaChatClient,
-    OllamaClientError,
-)
+from reporamp.ollama_client import OllamaChatClient, OllamaClientError
+
+MAX_CONTEXT_CHARS = 24_000  # ponytail: ~6k tokens; matches num_ctx in the client
 
 
 BANNER = r"""
@@ -21,6 +21,31 @@ BANNER = r"""
           R E P O R A M P   O L L A M A
           LOCAL CODEBASE INTELLIGENCE
 """
+
+
+def condense_report(text: str) -> str:
+    """Shrink report.json to fit a small local model's context window.
+
+    Per-module import lists are dropped; names and counts are kept.
+    """
+    try:
+        data = json.loads(text)
+        data["modules"] = [
+            {
+                "path": m["path"],
+                "classes": [c["name"] for c in m.get("classes", [])],
+                "functions": [f["name"] for f in m.get("functions", [])],
+                "import_count": len(m.get("imports", [])),
+            }
+            for m in data["modules"]
+        ]
+        text = json.dumps(data, separators=(",", ":"))
+    except (ValueError, KeyError, TypeError, AttributeError):
+        pass  # not a RepoRamp report; send as-is, truncated below
+
+    if len(text) > MAX_CONTEXT_CHARS:
+        text = text[:MAX_CONTEXT_CHARS] + "\n[report truncated]"
+    return text
 
 
 def select_model(client: OllamaChatClient, model: str | None) -> str:
@@ -82,7 +107,7 @@ def show_header(repository: Path, model: str, report_path: Path) -> None:
 
 def show_help() -> None:
     """Display available interactive commands."""
-    typer.secho("\n  REporRAMP COMMANDS", fg=typer.colors.BRIGHT_CYAN, bold=True)
+    typer.secho("\n  REPORAMP COMMANDS", fg=typer.colors.BRIGHT_CYAN, bold=True)
     typer.echo("  /help       Show this help menu")
     typer.echo("  /models     List locally installed Ollama models")
     typer.echo("  /model      Switch the active Ollama model")
@@ -136,6 +161,8 @@ def ask_question(client: OllamaChatClient, question: str, context: str) -> None:
 
         typer.echo("\n")
 
+    except KeyboardInterrupt:
+        typer.echo("\n[answer cancelled]\n")
     except OllamaClientError as exc:
         typer.echo(f"\nOllama error: {exc}", err=True)
 
@@ -154,7 +181,7 @@ def run_chat(
         raise typer.Exit(code=1)
 
     try:
-        context = report_path.read_text(encoding="utf-8")
+        context = condense_report(report_path.read_text(encoding="utf-8"))
     except OSError as exc:
         typer.echo(f"Error reading report: {exc}", err=True)
         raise typer.Exit(code=1) from exc
@@ -207,7 +234,7 @@ def run_chat(
 
         if command == "/model":
             try:
-                selected_model = change_model(client)
+                change_model(client)
             except OllamaClientError as exc:
                 typer.echo(f"Error: {exc}", err=True)
             continue

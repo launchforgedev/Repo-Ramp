@@ -25,7 +25,6 @@ class DependencyGraph:
     unresolved_imports: tuple[tuple[str, str], ...]
 
 
-
 def _module_name(path: Path, root: Path) -> str:
     """Convert a source path into a repository-relative module name."""
     relative_path = path.relative_to(root)
@@ -42,7 +41,6 @@ def _module_name(path: Path, root: Path) -> str:
     return ".".join(parts)
 
 
-
 def _resolve_internal_import(
     imported_module: str,
     available_modules: set[str],
@@ -50,17 +48,6 @@ def _resolve_internal_import(
     """Resolve an import to a known repository module or package."""
     if imported_module in available_modules:
         return imported_module
-
-    # A package may be imported even if only one of its submodules
-    # appears in the scanned repository.
-    package_candidates = [
-        module
-        for module in available_modules
-        if module.startswith(f"{imported_module}.")
-    ]
-
-    if package_candidates:
-        return imported_module if imported_module in available_modules else None
 
     return None
 
@@ -213,6 +200,7 @@ def find_dependency_cycles(
             visit(module)
 
     return tuple(sorted(cycles))
+
 
 def classify_import(imported_module: str) -> str:
     """Classify an import as standard-library, third-party, or unresolved."""

@@ -56,7 +56,6 @@ def print_banner() -> None:
     typer.echo()
 
 
-
 def launch_chat_terminal(
     repository: Path,
     report_path: Path,
@@ -90,7 +89,6 @@ def launch_chat_terminal(
     from reporamp.chat import run_chat
 
     run_chat(repository, report_path, model)
-
 
 
 @app.command()
@@ -214,15 +212,13 @@ def analyze(
             help="Open an interactive Ollama codebase chat after analysis.",
         ),
     ] = False,
-    
-model: Annotated[
-    str | None,
-    typer.Option(
-        "--model",
-        help="Ollama model to use with --ask. Defaults to interactive selection.",
-    ),
-] = None,
-
+    model: Annotated[
+        str | None,
+        typer.Option(
+            "--model",
+            help="Ollama model to use with --ask. Defaults to interactive selection.",
+        ),
+    ] = None,
 ) -> None:
     """Analyze a repository and generate Markdown and JSON reports.
 
@@ -258,10 +254,10 @@ model: Annotated[
         )
 
     if ask and model is not None and not model.strip():
-       raise typer.BadParameter(
-        "--model cannot be empty.",
-        param_hint="--model",
-    )
+        raise typer.BadParameter(
+            "--model cannot be empty.",
+            param_hint="--model",
+        )
 
     try:
         fail_rules = parse_rule_selection(fail_on)
@@ -350,7 +346,6 @@ model: Annotated[
                 f"  [{finding.rule_id}] {finding.module}: {finding.message}",
                 err=True,
             )
-        raise typer.Exit(code=2)
 
     if ask:
         report_path = output / "report.json"
@@ -374,6 +369,9 @@ model: Annotated[
                 err=True,
             )
             raise typer.Exit(code=1) from exc
+
+    if failing:
+        raise typer.Exit(code=2)
 
 
 @app.command("chat")
@@ -401,15 +399,13 @@ def chat(
             help="Repository being analyzed.",
         ),
     ] = Path("."),
-    
-model: Annotated[
-    str | None,
-    typer.Option(
-        "--model",
-        help="Ollama model name. Defaults to interactive selection.",
-    ),
-] = None,
-
+    model: Annotated[
+        str | None,
+        typer.Option(
+            "--model",
+            help="Ollama model name. Defaults to interactive selection.",
+        ),
+    ] = None,
 ) -> None:
     """Ask questions about a previously analyzed repository."""
     from reporamp.chat import run_chat
